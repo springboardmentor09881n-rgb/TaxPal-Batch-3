@@ -1,0 +1,142 @@
+:root {
+  --tp-primary: #0d6e6e;
+  --tp-primary-dark: #084f4f;
+  --tp-primary-light: #e6f4f4;
+  --tp-accent: #f0a500;
+  --tp-accent-hover: #d99200;
+  --tp-bg: #f7faf9;
+  --tp-surface: #ffffff;
+  --tp-text: #1a2b2b;
+  --tp-text-muted: #5c6f6f;
+  --tp-border: #d8e4e4;
+  --tp-danger: #c0392b;
+  --tp-success: #1e8a5a;
+  --tp-shadow: 0 12px 40px rgba(13, 110, 110, 0.12);
+  --tp-radius: 14px;
+  --tp-font-body: 'DM Sans', system-ui, sans-serif;
+  --tp-font-display: 'Outfit', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--tp-font-body);
+  color: var(--tp-text);
+  background: var(--tp-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--tp-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--tp-primary);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(13, 110, 110, 0.25);
+}
+
+.btn-primary:hover {
+  background: var(--tp-primary-dark);
+}
+
+.btn-accent {
+  background: var(--tp-accent);
+  color: #1a2b2b;
+}
+
+.btn-accent:hover {
+  background: var(--tp-accent-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--tp-primary);
+  border: 2px solid var(--tp-primary);
+}
+
+.btn-outline:hover {
+  background: var(--tp-primary-light);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--tp-text);
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--tp-border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--tp-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--tp-primary);
+  box-shadow: 0 0 0 3px rgba(13, 110, 110, 0.15);
+}
+
+.error-message {
+  color: var(--tp-danger);
+  font-size: 0.875rem;
+  margin: 0.5rem 0 0;
+}
+
+.success-message {
+  color: var(--tp-success);
+  font-size: 0.875rem;
+  margin: 0.5rem 0 0;
+}

@@ -1,0 +1,90 @@
+<div class="auth-page">
+  <div class="auth-panel brand-panel">
+    <a routerLink="/" class="brand">
+      <span class="brand-icon">TP</span>
+      <span class="brand-name">TaxPal</span>
+    </a>
+    <h1>Join TaxPal</h1>
+    <p>Create your account to start tracking finances and estimating taxes.</p>
+    <ul class="auth-points">
+      <li>Secure account with encrypted password</li>
+      <li>Country-based tax estimation</li>
+      <li>Income bracket classification</li>
+    </ul>
+  </div>
+
+  <div class="auth-panel form-panel">
+    <div class="form-card">
+      <h2>Sign up</h2>
+      <p class="subtitle">Fill in your details to get started.</p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Full name</label>
+          <input id="name" type="text" formControlName="name" placeholder="Your full name" autocomplete="name" />
+          @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+            <p class="error-message">Name is required.</p>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input id="email" type="email" formControlName="email" placeholder="you@example.com" autocomplete="email" />
+          @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+            <p class="error-message">Email is required.</p>
+          }
+          @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+            <p class="error-message">Enter a valid email address.</p>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" formControlName="password" placeholder="At least 6 characters" autocomplete="new-password" />
+          @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+            <p class="error-message">Password is required.</p>
+          }
+          @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+            <p class="error-message">Password must be at least 6 characters.</p>
+          }
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="country">Country</label>
+            <input id="country" type="text" formControlName="country" placeholder="e.g. India" autocomplete="country-name" />
+            @if (form.controls.country.touched && form.controls.country.hasError('required')) {
+              <p class="error-message">Country is required.</p>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="income_bracket">Income bracket</label>
+            <select id="income_bracket" formControlName="income_bracket">
+              @for (bracket of incomeBrackets; track bracket.value) {
+                <option [value]="bracket.value">{{ bracket.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (errorMessage()) {
+          <p class="error-message">{{ errorMessage() }}</p>
+        }
+        @if (successMessage()) {
+          <p class="success-message">{{ successMessage() }}</p>
+        }
+
+        <button class="btn btn-primary full-width" type="submit" [disabled]="loading()">
+          {{ loading() ? 'Creating account...' : 'Create Account' }}
+        </button>
+      </form>
+
+      <p class="switch-auth">
+        Already have an account?
+        <a routerLink="/login">Log in</a>
+      </p>
+      <a routerLink="/" class="back-link">← Back to home</a>
+    </div>
+  </div>
+</div>

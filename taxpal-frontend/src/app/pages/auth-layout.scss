@@ -1,0 +1,147 @@
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.auth-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem;
+}
+
+.brand-panel {
+  background: linear-gradient(160deg, var(--tp-primary-dark), var(--tp-primary));
+  color: #fff;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-icon {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-family: var(--tp-font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.brand-name {
+  font-family: var(--tp-font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.brand-panel .brand {
+  margin-bottom: 2rem;
+}
+
+.brand-panel h1 {
+  font-family: var(--tp-font-display);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  margin: 0 0 0.75rem;
+}
+
+.brand-panel p {
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 24rem;
+  margin: 0 0 2rem;
+}
+
+.auth-points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.auth-points li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.auth-points li::before {
+  content: '✓';
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+}
+
+.form-panel {
+  background: var(--tp-bg);
+}
+
+.form-card {
+  width: min(420px, 100%);
+  margin: 0 auto;
+  background: var(--tp-surface);
+  border: 1px solid var(--tp-border);
+  border-radius: var(--tp-radius);
+  padding: 2rem;
+  box-shadow: var(--tp-shadow);
+}
+
+.form-card h2 {
+  font-family: var(--tp-font-display);
+  margin: 0 0 0.35rem;
+}
+
+.subtitle {
+  color: var(--tp-text-muted);
+  margin: 0 0 1.5rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.switch-auth {
+  text-align: center;
+  margin: 1.25rem 0 0.75rem;
+  color: var(--tp-text-muted);
+}
+
+.switch-auth a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-link {
+  display: block;
+  text-align: center;
+  color: var(--tp-text-muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--tp-primary);
+}
+
+@media (max-width: 860px) {
+  .auth-page {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-panel {
+    padding: 2rem 1.5rem;
+  }
+}

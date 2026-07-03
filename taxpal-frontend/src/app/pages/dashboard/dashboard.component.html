@@ -1,0 +1,23 @@
+<div class="dashboard-page">
+  <header class="dashboard-header">
+    <a routerLink="/" class="brand">
+      <span class="brand-icon">TP</span>
+      <span class="brand-name">TaxPal</span>
+    </a>
+    <button class="btn btn-outline" type="button" (click)="logout()">Logout</button>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="welcome-card">
+      <span class="badge">JWT Validated</span>
+      <h1>Welcome, {{ user()?.name }}!</h1>
+      <p>Your session is secured with JWT authentication. Dashboard features will be added in the next milestone.</p>
+
+      <div class="user-details">
+        <div><span>Email</span><strong>{{ user()?.email }}</strong></div>
+        <div><span>Country</span><strong>{{ user()?.country }}</strong></div>
+        <div><span>Income Bracket</span><strong>{{ user()?.income_bracket }}</strong></div>
+      </div>
+    </div>
+  </main>
+</div>

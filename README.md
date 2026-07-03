@@ -1,4 +1,4 @@
-# TaxPal — Infosys Intern Project
+# TaxPal-Batch-3
 
 Personal Finance & Tax Estimator for Freelancers (Angular + MongoDB).
 

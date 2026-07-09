@@ -1,114 +1,174 @@
-<header class="navbar">
-  <div class="container navbar-inner">
-    <a routerLink="/" class="brand">
-      <span class="brand-icon">TP</span>
-      <span class="brand-name">TaxPal</span>
-    </a>
-    <nav class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#how-it-works">How it works</a>
-      @if (isAuthenticated()) {
-        <span class="nav-user">Hi, {{ currentUser()?.name }}</span>
-        <a routerLink="/dashboard" class="btn btn-primary">Dashboard</a>
-        <button class="btn btn-outline nav-logout" type="button" (click)="logout()">Logout</button>
-      } @else {
-        <a routerLink="/login" class="nav-login">Log in</a>
-        <a routerLink="/signup" class="btn btn-accent">Get Started</a>
-      }
-    </nav>
+<div class="landing">
+  <div class="wave-bg" aria-hidden="true">
+    <svg class="waves" viewBox="0 0 800 900" preserveAspectRatio="xMaxYMid slice">
+      <path d="M600,0 C700,150 500,300 650,450 C780,580 720,720 800,900 L800,0 Z" fill="url(#waveGrad)" opacity="0.15"/>
+      <path d="M650,0 C750,200 550,350 700,500 C820,620 780,750 800,900 L800,0 Z" fill="none" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.4"/>
+      <path d="M680,50 C760,180 600,320 720,470 C800,580 760,700 800,850" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.25"/>
+      <path d="M620,100 C700,250 520,400 660,550 C740,650 700,780 780,900" fill="none" stroke="#60a5fa" stroke-width="0.8" opacity="0.2"/>
+      <defs>
+        <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#3b82f6"/>
+          <stop offset="100%" stop-color="#1d4ed8"/>
+        </linearGradient>
+        <linearGradient id="lineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#60a5fa"/>
+          <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="glow-orb"></div>
   </div>
-</header>
 
-<main>
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-content">
-        <span class="badge">For Freelancers & Gig Workers</span>
-        <h1>Manage finances. Estimate taxes. Stay ahead.</h1>
-        <p>
-          TaxPal helps you track income, monitor expenses, set budgets, and estimate
-          quarterly taxes — built for independent professionals who need clarity, not complexity.
-        </p>
-        <div class="hero-actions">
-          <a routerLink="/signup" class="btn btn-primary">Start Free</a>
-          <a routerLink="/login" class="btn btn-outline">Sign In</a>
-        </div>
-        <ul class="hero-stats">
-          <li><strong>4</strong><span>Core modules</span></li>
-          <li><strong>Q1–Q4</strong><span>Tax planning</span></li>
-          <li><strong>PDF/CSV</strong><span>Export ready</span></li>
-        </ul>
-      </div>
-      <div class="hero-card">
-        <div class="hero-card-header">
-          <span>Quarterly Overview</span>
-          <span class="pill">Q2 2026</span>
-        </div>
-        <div class="hero-metric">
-          <small>Estimated Tax</small>
-          <strong>₹42,500</strong>
-        </div>
-        <div class="hero-bars">
-          <div class="bar income"><span>Income</span><em>₹3.2L</em></div>
-          <div class="bar expense"><span>Expenses</span><em>₹68K</em></div>
-          <div class="bar savings"><span>Savings</span><em>₹1.1L</em></div>
-        </div>
-        <p class="hero-card-note">Sample dashboard preview — full features coming soon.</p>
-      </div>
-    </div>
-  </section>
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <app-brand />
 
-  <section id="features" class="features">
-    <div class="container">
-      <div class="section-head">
-        <h2>Everything you need to stay tax-ready</h2>
-        <p>From transaction logging to downloadable reports — TaxPal covers your freelance finance workflow.</p>
-      </div>
-      <div class="feature-grid">
-        @for (feature of features; track feature.title) {
-          <article class="feature-card">
-            <span class="feature-icon">{{ feature.icon }}</span>
-            <h3>{{ feature.title }}</h3>
-            <p>{{ feature.description }}</p>
-          </article>
+      <nav class="nav-center" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it Works</a>
+        <a href="#modules">Modules</a>
+      </nav>
+
+      <div class="nav-right">
+        @if (isAuthenticated()) {
+          <span class="nav-user">Hi, {{ currentUser()?.name }}</span>
+          <a routerLink="/dashboard" class="btn btn-cta btn-sm">
+            Dashboard
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v4.69a.75.75 0 001.5 0v-6a.75.75 0 00-.75-.75h-6a.75.75 0 000 1.5h4.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"/></svg>
+          </a>
+        } @else {
+          <a routerLink="/login" class="nav-login">Log in</a>
+          <a routerLink="/signup" class="btn btn-cta btn-sm">
+            Get Started
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v4.69a.75.75 0 001.5 0v-6a.75.75 0 00-.75-.75h-6a.75.75 0 000 1.5h4.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"/></svg>
+          </a>
         }
       </div>
     </div>
-  </section>
+  </header>
 
-  <section id="how-it-works" class="how-it-works">
-    <div class="container how-grid">
-      <div>
-        <h2>How TaxPal works</h2>
-        <p>Get started in minutes and build toward quarterly tax confidence.</p>
+  <main>
+    <section class="hero">
+      <div class="container hero-layout">
+        <div class="hero-left">
+          <p class="hero-eyebrow">YOUR FINANCES, OUR PRECISION</p>
+
+          <div class="topic-pill">
+            <span class="pill-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+            </span>
+            Finance &amp; Tax Tracking
+          </div>
+
+          <h1>Effortless <span class="accent-word">Tax</span> Planning</h1>
+
+          <p class="hero-desc">
+            Track income, manage expenses, set budgets, and estimate quarterly taxes —
+            built for freelancers who need clarity without complexity.
+          </p>
+
+          @if (!isAuthenticated()) {
+            <div class="hero-actions">
+              <a routerLink="/signup" class="btn btn-cta btn-hero">
+                Calculate Now
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v4.69a.75.75 0 001.5 0v-6a.75.75 0 00-.75-.75h-6a.75.75 0 000 1.5h4.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"/></svg>
+              </a>
+              <a routerLink="/login" class="btn btn-outline btn-hero-secondary">Sign In</a>
+            </div>
+          }
+        </div>
+
+        <div class="hero-right">
+          <div class="trust-stack">
+            @for (badge of trustBadges; track badge.label) {
+              <div class="trust-card">
+                <div class="trust-icon" aria-hidden="true">
+                  @switch (badge.icon) {
+                    @case ('users') {
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 003.958 1.006 8.989 8.989 0 002.4-.636.75.75 0 00.418-.74 8.967 8.967 0 00-4.553-1.72z"/></svg>
+                    }
+                    @case ('chart') {
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"/></svg>
+                    }
+                    @case ('shield') {
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.75.75 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.904 6.28a.75.75 0 00-1.06-1.06l-4.5 4.5a.75.75 0 101.06 1.06l2.22-2.22 1.44 1.44a.75.75 0 001.06-1.06l-1.97-1.97 2.22-2.22z" clip-rule="evenodd"/></svg>
+                    }
+                    @default {
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm5.845 9.97l-1.03 1.03a.75.75 0 101.06 1.06l1.03-1.03 3.22 3.22a.75.75 0 101.06-1.06l-3.22-3.22 1.03-1.03a.75.75 0 00-1.06-1.06l-1.03 1.03-3.22-3.22a.75.75 0 00-1.06 1.06l3.22 3.22z" clip-rule="evenodd"/></svg>
+                    }
+                  }
+                </div>
+                <div class="trust-info">
+                  <span class="trust-label">{{ badge.label }}</span>
+                  <span class="trust-rating">
+                    {{ badge.rating }}
+                    <svg class="star" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd"/></svg>
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
       </div>
-      <ol class="steps">
-        @for (step of steps; track step; let i = $index) {
-          <li>
-            <span class="step-num">{{ i + 1 }}</span>
-            <span>{{ step }}</span>
-          </li>
-        }
-      </ol>
-    </div>
-  </section>
+    </section>
 
-  <section class="cta">
-    <div class="container cta-box">
-      <h2>Ready to take control of your freelance finances?</h2>
-      <p>Create your account and start with income & expense logging today.</p>
-      <a routerLink="/signup" class="btn btn-accent">Create Account</a>
-    </div>
-  </section>
-</main>
+    <section id="features" class="section features-section">
+      <div class="container">
+        <div class="section-intro">
+          <span class="section-label">Modules</span>
+          <h2>Everything you need to stay <span class="accent-word">tax-ready</span></h2>
+          <p>Four powerful modules designed for the freelance finance workflow.</p>
+        </div>
+        <div id="modules" class="feature-grid">
+          @for (feature of features; track feature.title) {
+            <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">{{ feature.icon }}</span>
+              <h3>{{ feature.title }}</h3>
+              <p>{{ feature.description }}</p>
+            </article>
+          }
+        </div>
+      </div>
+    </section>
 
-<footer class="footer">
-  <div class="container footer-inner">
-    <div class="brand">
-      <span class="brand-icon">TP</span>
-      <span class="brand-name">TaxPal</span>
+    <section id="how-it-works" class="section steps-section">
+      <div class="container">
+        <div class="section-intro">
+          <span class="section-label">Process</span>
+          <h2>How TaxPal works</h2>
+          <p>From sign-up to tax confidence in four simple steps.</p>
+        </div>
+        <ol class="steps-grid">
+          @for (step of steps; track step.title; let i = $index) {
+            <li>
+              <span class="step-index">0{{ i + 1 }}</span>
+              <h3>{{ step.title }}</h3>
+              <p>{{ step.desc }}</p>
+            </li>
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="section cta-section">
+      <div class="container">
+        <div class="cta-inner">
+          <h2>Ready to take control of your freelance finances?</h2>
+          <p>Create your free account and start tracking today.</p>
+          <a routerLink="/signup" class="btn btn-cta btn-lg">
+            Get Started Free
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v4.69a.75.75 0 001.5 0v-6a.75.75 0 00-.75-.75h-6a.75.75 0 000 1.5h4.69l-7.22 7.22a.75.75 0 000 1.06z" clip-rule="evenodd"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <app-brand variant="footer" />
+      <p>Personal Finance &amp; Tax Estimator for Freelancers</p>
+      <small>Infosys Intern Project · Angular + MongoDB</small>
     </div>
-    <p>Personal Finance & Tax Estimator for Freelancers</p>
-    <small>Infosys Intern Project · Milestone 1</small>
-  </div>
-</footer>
+  </footer>
+</div>

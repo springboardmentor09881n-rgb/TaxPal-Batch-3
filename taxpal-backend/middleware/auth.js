@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 function authMiddleware(req, res, next) {
   const header = req.headers.authorization;
@@ -15,7 +16,7 @@ function authMiddleware(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId;
+    req.userId = new mongoose.Types.ObjectId(decoded.userId);
     req.token = token;
     next();
   } catch (error) {

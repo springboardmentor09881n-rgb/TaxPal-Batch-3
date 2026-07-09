@@ -9,6 +9,9 @@ node_modules/
 dist/
 .angular/cache/
 
+# Generated report exports
+taxpal-backend/exports/
+
 # Logs
 *.log
 npm-debug.log*

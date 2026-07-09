@@ -1,23 +1,519 @@
 <div class="dashboard-page">
-  <header class="dashboard-header">
-    <a routerLink="/" class="brand">
-      <span class="brand-icon">TP</span>
-      <span class="brand-name">TaxPal</span>
-    </a>
-    <button class="btn btn-outline" type="button" (click)="logout()">Logout</button>
-  </header>
+  <aside class="sidebar">
+    <app-brand />
 
-  <main class="dashboard-main">
-    <div class="welcome-card">
-      <span class="badge">JWT Validated</span>
-      <h1>Welcome, {{ user()?.name }}!</h1>
-      <p>Your session is secured with JWT authentication. Dashboard features will be added in the next milestone.</p>
+    <nav class="sidebar-nav">
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          class="nav-item"
+          [class.active]="activeTab() === tab.id"
+          (click)="setTab(tab.id)"
+        >
+          <span class="nav-icon">{{ tab.icon }}</span>
+          <span>{{ tab.label }}</span>
+        </button>
+      }
+    </nav>
 
-      <div class="user-details">
-        <div><span>Email</span><strong>{{ user()?.email }}</strong></div>
-        <div><span>Country</span><strong>{{ user()?.country }}</strong></div>
-        <div><span>Income Bracket</span><strong>{{ user()?.income_bracket }}</strong></div>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">{{ user()?.name?.charAt(0) }}</div>
+        <div>
+          <strong>{{ user()?.name }}</strong>
+          <small>{{ user()?.country }}</small>
+        </div>
       </div>
+      <button class="btn btn-ghost full-width" type="button" (click)="logout()">Logout</button>
     </div>
-  </main>
+  </aside>
+
+  <div class="dashboard-content">
+    <header class="content-header">
+      <div>
+        <p class="eyebrow">Freelancer Finance Hub</p>
+        <h1>Welcome back{{ user()?.name ? ', ' + user()!.name.split(' ')[0] : '' }}</h1>
+      </div>
+      <div class="header-actions">
+        <input type="month" class="month-picker" [value]="monthKey()" (change)="changeMonth($any($event.target).value)" />
+        @if (dashboard(); as data) {
+          <span class="meta-chip accent">{{ data.tax.quarter }} FY {{ data.tax.fiscalYear }}</span>
+          @if (data.unreadAlertCount) {
+            <button class="meta-chip alert-chip" type="button" (click)="setTab('alerts')">
+              {{ data.unreadAlertCount }} alert{{ data.unreadAlertCount > 1 ? 's' : '' }}
+            </button>
+          }
+        }
+      </div>
+    </header>
+
+    @if (message()) {
+      <div class="alert alert-success">{{ message() }}</div>
+    }
+    @if (error()) {
+      <div class="alert alert-error">{{ error() }}</div>
+    }
+
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading your financial data from MongoDB...</p>
+      </div>
+    } @else {
+      @if (dashboard(); as data) {
+      @if (activeTab() === 'overview') {
+        <section class="metric-grid">
+          <article class="metric-card income">
+            <span>Monthly Income</span>
+            <strong>{{ currency(data.summary.totalIncome) }}</strong>
+          </article>
+          <article class="metric-card expense">
+            <span>Monthly Expenses</span>
+            <strong>{{ currency(data.summary.totalExpenses) }}</strong>
+          </article>
+          <article class="metric-card net">
+            <span>Net Income</span>
+            <strong>{{ currency(data.summary.netIncome) }}</strong>
+          </article>
+          <article class="metric-card tax">
+            <span>Est. Quarterly Tax</span>
+            <strong>{{ currency(data.tax.quarterlyTax) }}</strong>
+          </article>
+        </section>
+
+        <section class="charts-grid">
+          <article class="panel chart-panel">
+            <div class="panel-head"><h2>Financial Snapshot</h2></div>
+            <app-chart [config]="financialSnapshotChart(data)" [height]="260" />
+          </article>
+
+          <article class="panel chart-panel">
+            <div class="panel-head"><h2>Spending by Category</h2></div>
+            @if (data.spendingByCategory.length === 0) {
+              <p class="empty-state">No expense data for this month.</p>
+            } @else {
+              <app-chart [config]="spendingChart(data)" [height]="260" />
+            }
+          </article>
+        </section>
+
+        @if (data.alerts?.length) {
+          <section class="panel alerts-panel">
+            <div class="panel-head">
+              <h2>Recent Alerts</h2>
+              <button class="btn btn-sm btn-ghost" type="button" (click)="setTab('alerts')">View all</button>
+            </div>
+            <div class="alert-list compact">
+              @for (alert of data.alerts!.slice(0, 4); track alert._id) {
+                <div class="alert-item" [class.unread]="!alert.isRead">
+                  <span class="alert-type" [class]="alert.type">{{ alert.type }}</span>
+                  <div>
+                    <strong>{{ alert.message }}</strong>
+                    <small>{{ formatDate(alert.alertDate) }}</small>
+                  </div>
+                </div>
+              }
+            </div>
+          </section>
+        }
+
+        <div class="content-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <h2>Recent Transactions</h2>
+              <button class="btn btn-sm btn-primary" type="button" (click)="setTab('transactions')">Add New</button>
+            </div>
+            @if (data.transactions.length === 0) {
+              <p class="empty-state">No transactions yet. Add your first income or expense.</p>
+            } @else {
+              <div class="transaction-list compact">
+                @for (tx of data.transactions.slice(0, 6); track tx._id) {
+                  <div class="transaction-row">
+                    <div class="tx-info">
+                      <span class="tx-type" [class.income]="tx.type === 'income'" [class.expense]="tx.type === 'expense'">{{ tx.type }}</span>
+                      <div>
+                        <strong>{{ titleCase(tx.category) }}</strong>
+                        <small>{{ formatDate(tx.date) }}</small>
+                      </div>
+                    </div>
+                    <span class="tx-amount" [class.positive]="tx.type === 'income'" [class.negative]="tx.type === 'expense'">
+                      {{ tx.type === 'income' ? '+' : '-' }}{{ currency(tx.amount) }}
+                    </span>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+        </div>
+      }
+
+      @if (activeTab() === 'transactions') {
+        <div class="content-grid transactions-layout">
+          <section class="panel">
+            <div class="panel-head"><h2>Add Transaction</h2></div>
+            <div class="type-toggle">
+              <button type="button" class="toggle-btn" [class.active]="transactionForm().type === 'income'" (click)="setTransactionType('income')">Income</button>
+              <button type="button" class="toggle-btn" [class.active]="transactionForm().type === 'expense'" (click)="setTransactionType('expense')">Expense</button>
+            </div>
+            <form class="form-stack" (ngSubmit)="addTransaction()">
+              <label>
+                Description
+                <input type="text" placeholder="e.g. Client invoice payment" [ngModel]="transactionForm().description" (ngModelChange)="onDescriptionChange($event)" name="description" />
+              </label>
+              <label>
+                Category
+                <select [ngModel]="transactionForm().category" (ngModelChange)="updateTransactionField('category', $event)" name="category">
+                  @for (cat of transactionForm().type === 'income' ? incomeCategories() : expenseCategories(); track cat) {
+                    <option [value]="cat">{{ titleCase(cat) }}</option>
+                  }
+                </select>
+              </label>
+              <div class="form-row">
+                <label>
+                  Amount (₹)
+                  <input type="number" min="1" [ngModel]="transactionForm().amount" (ngModelChange)="updateTransactionField('amount', +$event)" name="amount" required />
+                </label>
+                <label>
+                  Date
+                  <input type="date" [ngModel]="transactionForm().date" (ngModelChange)="updateTransactionField('date', $event)" name="date" required />
+                </label>
+              </div>
+              <button class="btn btn-primary" type="submit" [disabled]="saving()">
+                {{ saving() ? 'Saving...' : 'Add ' + (transactionForm().type === 'income' ? 'Income' : 'Expense') }}
+              </button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h2>All Transactions</h2>
+              <span class="count-badge">{{ data.transactions.length }}</span>
+            </div>
+            @if (data.transactions.length === 0) {
+              <p class="empty-state">Your transaction history will appear here.</p>
+            } @else {
+              <div class="transaction-list">
+                @for (tx of data.transactions; track tx._id) {
+                  @if (editingTransactionId() === tx._id) {
+                    <div class="transaction-row editing">
+                      <form class="edit-form" (ngSubmit)="saveTransactionEdit()">
+                        <select [ngModel]="editTransactionForm().type" (ngModelChange)="updateEditTransactionField('type', $event)" name="editType">
+                          <option value="income">Income</option>
+                          <option value="expense">Expense</option>
+                        </select>
+                        <select [ngModel]="editTransactionForm().category" (ngModelChange)="updateEditTransactionField('category', $event)" name="editCategory">
+                          @for (cat of editTransactionForm().type === 'income' ? incomeCategories() : expenseCategories(); track cat) {
+                            <option [value]="cat">{{ titleCase(cat) }}</option>
+                          }
+                        </select>
+                        <input type="text" placeholder="Description" [ngModel]="editTransactionForm().description" (ngModelChange)="updateEditTransactionField('description', $event)" name="editDescription" />
+                        <input type="number" min="1" [ngModel]="editTransactionForm().amount" (ngModelChange)="updateEditTransactionField('amount', +$event)" name="editAmount" />
+                        <input type="date" [ngModel]="editTransactionForm().date" (ngModelChange)="updateEditTransactionField('date', $event)" name="editDate" />
+                        <div class="edit-actions">
+                          <button class="btn btn-sm btn-primary" type="submit" [disabled]="saving()">Save</button>
+                          <button class="btn btn-sm btn-ghost" type="button" (click)="cancelEditTransaction()">Cancel</button>
+                        </div>
+                      </form>
+                    </div>
+                  } @else {
+                  <div class="transaction-row">
+                    <div class="tx-info">
+                      <span class="tx-type" [class.income]="tx.type === 'income'" [class.expense]="tx.type === 'expense'">{{ tx.type }}</span>
+                      <div>
+                        <strong>{{ titleCase(tx.category) }}</strong>
+                        <small>{{ tx.description || 'No description' }} · {{ formatDate(tx.date) }}</small>
+                      </div>
+                    </div>
+                    <div class="tx-actions">
+                      <span class="tx-amount" [class.positive]="tx.type === 'income'" [class.negative]="tx.type === 'expense'">
+                        {{ tx.type === 'income' ? '+' : '-' }}{{ currency(tx.amount) }}
+                      </span>
+                      <button class="btn-icon edit" type="button" title="Edit" (click)="startEditTransaction(tx)">✎</button>
+                      <button class="btn-icon" type="button" title="Delete" (click)="removeTransaction(tx._id)">×</button>
+                    </div>
+                  </div>
+                  }
+                }
+              </div>
+            }
+          </section>
+        </div>
+      }
+
+      @if (activeTab() === 'budgets') {
+        <div class="content-grid budgets-layout">
+          <section class="panel">
+            <div class="panel-head"><h2>Set Monthly Budget</h2></div>
+            <form class="form-stack" (ngSubmit)="saveBudget()">
+              <label>
+                Category
+                <select [ngModel]="budgetForm().category" (ngModelChange)="updateBudgetField('category', $event)" name="budgetCategory">
+                  @for (cat of expenseCategories(); track cat) {
+                    <option [value]="cat">{{ titleCase(cat) }}</option>
+                  }
+                </select>
+              </label>
+              <label>
+                Monthly Limit (₹)
+                <input type="number" min="1" [ngModel]="budgetForm().limit" (ngModelChange)="updateBudgetField('limit', $event)" name="budgetLimit" required />
+              </label>
+              <button class="btn btn-primary" type="submit" [disabled]="saving()">{{ saving() ? 'Saving...' : 'Save Budget' }}</button>
+            </form>
+          </section>
+
+          <section class="panel wide">
+            <div class="panel-head"><h2>Budget Progress — {{ data.month }}</h2></div>
+            @if (data.budgetProgress.length === 0) {
+              <p class="empty-state">Set category limits to track spending progress.</p>
+            } @else {
+              <div class="budget-chart-wrap">
+                <app-chart [config]="budgetChart(data)" [height]="300" />
+              </div>
+              <div class="budget-list">
+                @for (budget of data.budgetProgress; track budget.category) {
+                  <div class="budget-item" [class.over]="budget.status === 'over'" [class.warning]="budget.status === 'warning'">
+                    <div class="budget-head">
+                      <strong>{{ titleCase(budget.category) }}</strong>
+                      <span>{{ currency(budget.spent) }} / {{ currency(budget.limit) }}</span>
+                    </div>
+                    <div class="progress-track">
+                      <div class="progress-fill" [class.over]="budget.status === 'over'" [style.width.%]="budget.percent"></div>
+                    </div>
+                    <div class="budget-foot">
+                      <small>{{ budget.percent }}% used</small>
+                      <button class="btn-link danger" type="button" (click)="removeBudget(budget.id)">Remove</button>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+        </div>
+      }
+
+      @if (activeTab() === 'categories') {
+        <div class="content-grid categories-layout">
+          <section class="panel">
+            <div class="panel-head"><h2>Add Category</h2></div>
+            <form class="form-stack" (ngSubmit)="addCategory()">
+              <label>
+                Type
+                <select [ngModel]="categoryForm().type" (ngModelChange)="updateCategoryField('type', $event)" name="categoryType">
+                  <option value="income">Income</option>
+                  <option value="expense">Expense</option>
+                </select>
+              </label>
+              <label>
+                Category Name
+                <input type="text" placeholder="e.g. subscriptions" [ngModel]="categoryForm().name" (ngModelChange)="updateCategoryField('name', $event)" name="categoryName" required />
+              </label>
+              <label>
+                Description
+                <input type="text" placeholder="Optional description" [ngModel]="categoryForm().description" (ngModelChange)="updateCategoryField('description', $event)" name="categoryDescription" />
+              </label>
+              <button class="btn btn-primary" type="submit" [disabled]="saving()">{{ saving() ? 'Saving...' : 'Add Category' }}</button>
+            </form>
+          </section>
+
+          <section class="panel wide">
+            <div class="panel-head"><h2>Category Management</h2></div>
+            @if (managedCategories().length === 0) {
+              <p class="empty-state">Loading categories...</p>
+            } @else {
+              <div class="category-grid">
+                @for (cat of managedCategories(); track cat._id) {
+                  <div class="category-card">
+                    <span class="tx-type" [class.income]="cat.type === 'income'" [class.expense]="cat.type === 'expense'">{{ cat.type }}</span>
+                    <div>
+                      <strong>{{ titleCase(cat.name) }}</strong>
+                      <small>{{ cat.description || 'No description' }}</small>
+                    </div>
+                    <button class="btn-link danger" type="button" (click)="removeCategory(cat._id)">Remove</button>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+        </div>
+      }
+
+      @if (activeTab() === 'alerts') {
+        <section class="panel wide">
+          <div class="panel-head">
+            <h2>Alerts & Reminders</h2>
+            @if (data.unreadAlertCount) {
+              <button class="btn btn-sm btn-ghost" type="button" (click)="markAllAlertsRead()">Mark all read</button>
+            }
+          </div>
+          <p class="panel-desc">Tax due date reminders and budget warnings are generated automatically.</p>
+          @if (!data.alerts?.length) {
+            <p class="empty-state">No alerts right now. You're all caught up.</p>
+          } @else {
+            <div class="alert-list">
+              @for (alert of data.alerts!; track alert._id) {
+                <div class="alert-item" [class.unread]="!alert.isRead">
+                  <span class="alert-type" [class]="alert.type">{{ alert.type }}</span>
+                  <div>
+                    <strong>{{ alert.message }}</strong>
+                    <small>{{ formatDate(alert.alertDate) }}</small>
+                  </div>
+                  @if (!alert.isRead) {
+                    <button class="btn btn-sm btn-primary" type="button" (click)="markAlertRead(alert._id)">Mark read</button>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </section>
+      }
+
+      @if (activeTab() === 'tax') {
+        <div class="content-grid tax-layout">
+          <section class="panel tax-summary">
+            <div class="panel-head">
+              <h2>Tax Estimation Engine</h2>
+              <span class="meta-chip">{{ user()?.country }}</span>
+            </div>
+            <p class="panel-desc">Estimated tax based on fiscal year income minus expenses, using regional tax slabs.</p>
+            <div class="tax-metrics">
+              <div class="tax-metric">
+                <small>Taxable Income (FY)</small>
+                <strong>{{ currency(data.tax.taxableIncome) }}</strong>
+              </div>
+              <div class="tax-metric highlight">
+                <small>Annual Tax Estimate</small>
+                <strong>{{ currency(data.tax.annualTax) }}</strong>
+              </div>
+              <div class="tax-metric">
+                <small>Quarterly Payment</small>
+                <strong>{{ currency(data.tax.quarterlyTax) }}</strong>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="button" [disabled]="saving()" (click)="saveTaxEstimate()">
+              {{ saving() ? 'Saving...' : 'Save ' + data.tax.quarter + ' Estimate' }}
+            </button>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><h2>Quarterly Tax Calendar</h2></div>
+            <div class="calendar-list">
+              @for (item of data.tax.calendar; track item.quarter) {
+                <div class="calendar-item" [class.past]="item.status === 'past'">
+                  <div class="cal-quarter">{{ item.quarter }}</div>
+                  <div>
+                    <strong>{{ item.label }}</strong>
+                    <small>{{ formatDueDate(item.dueDate) }}</small>
+                  </div>
+                  <span class="cal-status" [class.upcoming]="item.status === 'upcoming'">{{ item.status === 'past' ? 'Past' : 'Upcoming' }}</span>
+                </div>
+              }
+            </div>
+          </section>
+
+          @if (data.tax.savedEstimates.length > 0) {
+            <section class="panel wide">
+              <div class="panel-head"><h2>Saved Estimates</h2></div>
+              <div class="estimate-grid">
+                @for (est of data.tax.savedEstimates; track est._id) {
+                  <div class="estimate-card">
+                    <div class="estimate-card-body">
+                      <span>{{ est.quarter }} FY {{ est.fiscalYear }}</span>
+                      <strong>{{ currency(est.estimatedTax) }}</strong>
+                      <small>Taxable: {{ currency(est.taxableIncome) }}</small>
+                    </div>
+                    <button class="btn-link danger" type="button" (click)="removeTaxEstimate(est._id)">Delete</button>
+                  </div>
+                }
+              </div>
+            </section>
+          }
+        </div>
+      }
+
+      @if (activeTab() === 'reports') {
+        <section class="panel reports-panel">
+          <div class="panel-head"><h2>Financial Reports & Export</h2></div>
+          <div class="report-controls">
+            <div class="report-period-toggle" role="group" aria-label="Report period">
+              <button
+                class="btn"
+                [class.active]="reportPeriod() === 'monthly'"
+                type="button"
+                (click)="loadReport('monthly')"
+              >
+                Monthly
+              </button>
+              <button
+                class="btn"
+                [class.active]="reportPeriod() === 'quarterly'"
+                type="button"
+                (click)="loadReport('quarterly')"
+              >
+                Quarterly
+              </button>
+            </div>
+            <div class="report-export-actions">
+              <button class="btn btn-outline" type="button" (click)="exportReport(reportPeriod(), 'csv')">Download CSV</button>
+              <button class="btn btn-primary" type="button" (click)="exportReport(reportPeriod(), 'pdf')">Download PDF</button>
+            </div>
+          </div>
+
+          @if (report(); as reportData) {
+            <div class="report-summary-grid">
+              <article class="report-stat"><span>Total Income</span><strong>{{ currency(reportData.summary.totalIncome) }}</strong></article>
+              <article class="report-stat"><span>Total Expenses</span><strong>{{ currency(reportData.summary.totalExpenses) }}</strong></article>
+              <article class="report-stat"><span>Net Income</span><strong>{{ currency(reportData.summary.netIncome) }}</strong></article>
+              <article class="report-stat"><span>Est. Tax</span><strong>{{ currency(reportData.summary.estimatedTax) }}</strong></article>
+            </div>
+            <p class="report-meta">{{ reportData.period }} · {{ reportData.summary.transactionCount }} transactions</p>
+            @if (categoryEntries(reportData).length > 0) {
+              <div class="report-chart-wrap">
+                <h3 class="chart-subtitle">Income vs Expenses by Category</h3>
+                <app-chart [config]="reportChart(reportData)" [height]="320" />
+              </div>
+            }
+            @if (reportData.transactions.length > 0) {
+              <div class="transaction-list compact">
+                @for (tx of reportData.transactions.slice(0, 10); track tx._id) {
+                  <div class="transaction-row">
+                    <div class="tx-info">
+                      <span class="tx-type" [class.income]="tx.type === 'income'" [class.expense]="tx.type === 'expense'">{{ tx.type }}</span>
+                      <div>
+                        <strong>{{ titleCase(tx.category) }}</strong>
+                        <small>{{ formatDate(tx.date) }}</small>
+                      </div>
+                    </div>
+                    <span class="tx-amount" [class.positive]="tx.type === 'income'" [class.negative]="tx.type === 'expense'">{{ currency(tx.amount) }}</span>
+                  </div>
+                }
+              </div>
+            }
+          } @else {
+            <p class="empty-state">Select a report period to generate your financial summary.</p>
+          }
+
+          @if (reportHistory().length > 0) {
+            <div class="report-history">
+              <h3 class="chart-subtitle">Saved Reports</h3>
+              <div class="history-list">
+                @for (item of reportHistory(); track item._id) {
+                  <div class="history-item">
+                    <div>
+                      <strong>{{ item.period }}</strong>
+                      <small>{{ titleCase(item.report_type) }} · {{ item.format.toUpperCase() }}</small>
+                    </div>
+                    <div class="history-actions">
+                      <span class="meta-chip">{{ formatDate(item.createdAt) }}</span>
+                      <button class="btn-link danger" type="button" (click)="removeReport(item._id)">Delete</button>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </section>
+      }
+      }
+    }
+  </div>
 </div>

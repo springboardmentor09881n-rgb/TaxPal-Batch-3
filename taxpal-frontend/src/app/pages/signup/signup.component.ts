@@ -3,10 +3,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { IncomeBracket } from '../../core/models/user.model';
+import { BrandComponent } from '../../shared/brand/brand.component';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, BrandComponent],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })

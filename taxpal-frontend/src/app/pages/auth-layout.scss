@@ -2,6 +2,7 @@
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  background: linear-gradient(160deg, var(--tp-bg-deep) 0%, var(--tp-bg) 50%, var(--tp-bg-content) 100%);
 }
 
 .auth-panel {
@@ -9,11 +10,28 @@
   flex-direction: column;
   justify-content: center;
   padding: 2.5rem;
+  position: relative;
 }
 
 .brand-panel {
-  background: linear-gradient(160deg, var(--tp-primary-dark), var(--tp-primary));
+  background:
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.12), transparent 45%),
+    linear-gradient(160deg, var(--tp-bg-deep), var(--tp-bg-mid));
   color: #fff;
+  overflow: hidden;
+  border-right: 1px solid var(--tp-border);
+}
+
+.brand-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  right: -60px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.08), transparent 70%);
+  pointer-events: none;
 }
 
 .brand {
@@ -22,25 +40,8 @@
   gap: 0.65rem;
   text-decoration: none;
   color: inherit;
-}
-
-.brand-icon {
-  display: grid;
-  place-items: center;
-  width: 2.4rem;
-  height: 2.4rem;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  font-family: var(--tp-font-display);
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-.brand-name {
-  font-family: var(--tp-font-display);
-  font-size: 1.35rem;
-  font-weight: 700;
+  position: relative;
+  z-index: 1;
 }
 
 .brand-panel .brand {
@@ -50,13 +51,19 @@
 .brand-panel h1 {
   font-family: var(--tp-font-display);
   font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
   margin: 0 0 0.75rem;
+  position: relative;
+  z-index: 1;
 }
 
 .brand-panel p {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--tp-text-muted);
   max-width: 24rem;
   margin: 0 0 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .auth-points {
@@ -65,12 +72,16 @@
   list-style: none;
   display: grid;
   gap: 0.85rem;
+  position: relative;
+  z-index: 1;
 }
 
 .auth-points li {
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  color: var(--tp-text-muted);
+  font-size: 0.92rem;
 }
 
 .auth-points li::before {
@@ -78,14 +89,17 @@
   width: 1.4rem;
   height: 1.4rem;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--tp-accent-light);
+  color: var(--tp-accent);
   display: grid;
   place-items: center;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  flex-shrink: 0;
 }
 
 .form-panel {
-  background: var(--tp-bg);
+  background: transparent;
 }
 
 .form-card {
@@ -95,33 +109,36 @@
   border: 1px solid var(--tp-border);
   border-radius: var(--tp-radius);
   padding: 2rem;
-  box-shadow: var(--tp-shadow);
+  backdrop-filter: blur(12px);
 }
 
 .form-card h2 {
   font-family: var(--tp-font-display);
+  font-weight: 800;
   margin: 0 0 0.35rem;
 }
 
 .subtitle {
   color: var(--tp-text-muted);
   margin: 0 0 1.5rem;
-}
-
-.full-width {
-  width: 100%;
-  margin-top: 0.5rem;
+  font-size: 0.92rem;
 }
 
 .switch-auth {
   text-align: center;
   margin: 1.25rem 0 0.75rem;
   color: var(--tp-text-muted);
+  font-size: 0.9rem;
 }
 
 .switch-auth a {
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
+  color: var(--tp-accent);
+}
+
+.switch-auth a:hover {
+  color: var(--tp-accent-hover);
 }
 
 .back-link {
@@ -133,7 +150,7 @@
 }
 
 .back-link:hover {
-  color: var(--tp-primary);
+  color: var(--tp-accent);
 }
 
 @media (max-width: 860px) {
@@ -143,5 +160,7 @@
 
   .brand-panel {
     padding: 2rem 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid var(--tp-border);
   }
 }

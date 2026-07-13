@@ -1,1 +1,95 @@
-<p>login works!</p>
+<div class="login-page">
+  <div class="login-card">
+
+    <div class="brand">
+      <h1>TaxPal</h1>
+      <p>Personal Finance & Tax Estimator</p>
+    </div>
+
+    <h2>Welcome Back</h2>
+
+    <p class="subtitle">
+      Sign in to manage your finances
+    </p>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+    >
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+        />
+
+        @if (
+          loginForm.controls.email.touched &&
+          loginForm.controls.email.invalid
+        ) {
+          <small class="error">
+            Enter a valid email address.
+          </small>
+        }
+      </div>
+
+
+      <div class="form-group">
+        <label for="password">Password</label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+
+        @if (
+          loginForm.controls.password.touched &&
+          loginForm.controls.password.invalid
+        ) {
+          <small class="error">
+            Password is required.
+          </small>
+        }
+      </div>
+
+
+      @if (errorMessage) {
+        <p class="form-error">
+          {{ errorMessage }}
+        </p>
+      }
+
+
+      <div class="form-options">
+        <label class="remember-me">
+          <input type="checkbox" />
+          Remember me
+        </label>
+
+        <a href="#">Forgot password?</a>
+      </div>
+
+
+      <button
+        type="submit"
+        class="login-button"
+      >
+        Sign In
+      </button>
+
+    </form>
+
+
+    <p class="signup-text">
+      Don't have an account?
+      <a routerLink="/register">Create account</a>
+    </p>
+
+  </div>
+</div>

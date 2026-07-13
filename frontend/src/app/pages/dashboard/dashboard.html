@@ -1,1 +1,140 @@
-<p>dashboard works!</p>
+<section class="dashboard-page">
+  <header class="dashboard-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Your financial overview based on saved transactions.</p>
+    </div>
+
+    <a routerLink="/transactions" class="add-transaction-link">
+      Add Transaction
+    </a>
+  </header>
+
+  <div class="message error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <p class="loading-message" *ngIf="isLoading">
+    Loading dashboard...
+  </p>
+
+  <ng-container *ngIf="!isLoading">
+    <section class="summary-grid">
+      <article class="summary-card">
+        <span>Total Income</span>
+
+        <strong class="income-value">
+          ₹{{ totalIncome | number:'1.2-2' }}
+        </strong>
+
+        <small>
+          Income recorded in your account
+        </small>
+      </article>
+
+      <article class="summary-card">
+        <span>Total Expenses</span>
+
+        <strong class="expense-value">
+          ₹{{ totalExpenses | number:'1.2-2' }}
+        </strong>
+
+        <small>
+          Expenses recorded in your account
+        </small>
+      </article>
+
+      <article class="summary-card">
+        <span>Current Balance</span>
+
+        <strong
+          [class.income-value]="currentBalance >= 0"
+          [class.expense-value]="currentBalance < 0"
+        >
+          ₹{{ currentBalance | number:'1.2-2' }}
+        </strong>
+
+        <small>
+          Income minus expenses
+        </small>
+      </article>
+
+      <article class="summary-card">
+        <span>Total Transactions</span>
+
+        <strong>
+          {{ transactions.length }}
+        </strong>
+
+        <small>
+          Saved transaction records
+        </small>
+      </article>
+    </section>
+
+    <section class="recent-card">
+      <div class="recent-heading">
+        <div>
+          <h2>Recent Transactions</h2>
+          <p>Your latest income and expense records.</p>
+        </div>
+
+        <a routerLink="/transactions">
+          View All
+        </a>
+      </div>
+
+      <p
+        class="empty-message"
+        *ngIf="recentTransactions.length === 0"
+      >
+        No transactions yet. Add your first income or expense.
+      </p>
+
+      <div
+        class="recent-list"
+        *ngIf="recentTransactions.length > 0"
+      >
+        <article
+          class="recent-item"
+          *ngFor="
+            let transaction of recentTransactions;
+            trackBy: trackTransaction
+          "
+        >
+          <div class="transaction-details">
+            <span
+              class="type-badge"
+              [class.income]="transaction.type === 'income'"
+              [class.expense]="transaction.type === 'expense'"
+            >
+              {{ transaction.type }}
+            </span>
+
+            <div>
+              <h3>{{ transaction.category }}</h3>
+
+              <p>
+                {{ transaction.description || 'No description' }}
+              </p>
+            </div>
+          </div>
+
+          <div class="transaction-value">
+            <strong
+              [class.income-value]="transaction.type === 'income'"
+              [class.expense-value]="transaction.type === 'expense'"
+            >
+              {{ transaction.type === 'income' ? '+' : '-' }}
+              ₹{{ transaction.amount | number:'1.2-2' }}
+            </strong>
+
+            <small>
+              {{ transaction.date | date:'mediumDate' }}
+            </small>
+          </div>
+        </article>
+      </div>
+    </section>
+  </ng-container>
+</section>

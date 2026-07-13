@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { Auth } from '../../services/auth';
 
@@ -16,6 +17,7 @@ import { Auth } from '../../services/auth';
 })
 export class Login {
   errorMessage = '';
+  isSubmitting = false;
 
   loginForm;
 
@@ -44,13 +46,21 @@ export class Login {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    const loggedIn = this.authService.login(email, password);
+    this.isSubmitting = true;
 
-    if (!loggedIn) {
-      this.errorMessage = 'Invalid email or password.';
-      return;
-    }
+    this.authService.login(email, password).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.router.navigate(['/dashboard']);
+      },
 
-    this.router.navigate(['/dashboard']);
+      error: (error: HttpErrorResponse) => {
+        this.isSubmitting = false;
+
+        this.errorMessage =
+          error.error?.message ||
+          'Login failed. Please try again.';
+      }
+    });
   }
 }

@@ -5,6 +5,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { Auth } from '../../services/auth';
 
@@ -16,6 +17,7 @@ import { Auth } from '../../services/auth';
 })
 export class Register {
   errorMessage = '';
+  isSubmitting = false;
 
   registerForm;
 
@@ -58,18 +60,26 @@ export class Register {
       return;
     }
 
-    const registered = this.authService.register({
+    this.isSubmitting = true;
+
+    this.authService.register({
       name: formValue.name,
       email: formValue.email,
       country: formValue.country,
       password: formValue.password
+    }).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.router.navigate(['/login']);
+      },
+
+      error: (error: HttpErrorResponse) => {
+        this.isSubmitting = false;
+
+        this.errorMessage =
+          error.error?.message ||
+          'Registration failed. Please try again.';
+      }
     });
-
-    if (!registered) {
-      this.errorMessage = 'An account with this email already exists.';
-      return;
-    }
-
-    this.router.navigate(['/login']);
   }
 }

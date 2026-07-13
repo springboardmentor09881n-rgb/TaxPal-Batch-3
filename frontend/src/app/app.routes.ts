@@ -15,46 +15,38 @@ export const routes: Routes = [
     path: 'login',
     component: Login
   },
-
   {
     path: 'register',
     component: Register
   },
-
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
   {
     path: '',
     component: AppLayout,
     canActivate: [authGuard],
-
     children: [
       {
         path: 'dashboard',
         component: Dashboard
       },
-
       {
         path: 'transactions',
         component: Transactions
       },
-
       {
         path: 'budgets',
         component: Budgets
       },
-
       {
         path: 'categories',
         component: Categories
       }
     ]
   },
-
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-
   {
     path: '**',
     redirectTo: 'login'

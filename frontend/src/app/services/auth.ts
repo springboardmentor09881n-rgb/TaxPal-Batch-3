@@ -1,65 +1,74 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 
 export interface User {
+  id: string;
+  name: string;
+  email: string;
+  country: string;
+}
+
+export interface RegisterData {
   name: string;
   email: string;
   country: string;
   password: string;
 }
 
+interface RegisterResponse {
+  message: string;
+  user: User;
+}
+
+interface LoginResponse {
+  message: string;
+  token: string;
+  user: User;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class Auth {
-  private readonly USERS_KEY = 'taxpal_users';
+  private readonly API_URL = 'http://localhost:5000/api/auth';
+  private readonly TOKEN_KEY = 'taxpal_token';
   private readonly CURRENT_USER_KEY = 'taxpal_current_user';
 
-  register(user: User): boolean {
-    const users = this.getUsers();
+  constructor(private http: HttpClient) {}
 
-    const userExists = users.some(
-      existingUser =>
-        existingUser.email.toLowerCase() === user.email.toLowerCase()
+  register(user: RegisterData): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(
+      `${this.API_URL}/register`,
+      user
     );
-
-    if (userExists) {
-      return false;
-    }
-
-    users.push(user);
-
-    localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
-
-    return true;
   }
 
-  login(email: string, password: string): boolean {
-    const users = this.getUsers();
+  login(email: string, password: string): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${this.API_URL}/login`, {
+        email,
+        password
+      })
+      .pipe(
+        tap(response => {
+          localStorage.setItem(this.TOKEN_KEY, response.token);
 
-    const user = users.find(
-      existingUser =>
-        existingUser.email.toLowerCase() === email.toLowerCase() &&
-        existingUser.password === password
-    );
-
-    if (!user) {
-      return false;
-    }
-
-    localStorage.setItem(
-      this.CURRENT_USER_KEY,
-      JSON.stringify(user)
-    );
-
-    return true;
+          localStorage.setItem(
+            this.CURRENT_USER_KEY,
+            JSON.stringify(response.user)
+          );
+        })
+      );
   }
 
   logout(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.CURRENT_USER_KEY);
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem(this.CURRENT_USER_KEY) !== null;
+    return localStorage.getItem(this.TOKEN_KEY) !== null;
   }
 
   getCurrentUser(): User | null {
@@ -68,9 +77,7 @@ export class Auth {
     return user ? JSON.parse(user) : null;
   }
 
-  private getUsers(): User[] {
-    const users = localStorage.getItem(this.USERS_KEY);
-
-    return users ? JSON.parse(users) : [];
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 }

@@ -24,6 +24,30 @@ import {
 export class Transactions implements OnInit {
   transactions: Transaction[] = [];
 
+  readonly expenseCategories = [
+    'Food',
+    'Rent',
+    'Transport',
+    'Shopping',
+    'Bills',
+    'Healthcare',
+    'Education',
+    'Entertainment',
+    'Other'
+  ];
+
+  readonly incomeCategories = [
+    'Salary',
+    'Freelance',
+    'Business',
+    'Investment',
+    'Bonus',
+    'Gift',
+    'Other'
+  ];
+
+  suggestedCategories: string[] = [];
+
   errorMessage = '';
   successMessage = '';
 
@@ -37,12 +61,18 @@ export class Transactions implements OnInit {
     private transactionService: TransactionService
   ) {
     this.transactionForm = this.formBuilder.nonNullable.group({
-      type: ['expense' as 'income' | 'expense', Validators.required],
+      type: [
+        'expense' as 'income' | 'expense',
+        Validators.required
+      ],
 
-      amount: [0, [
-        Validators.required,
-        Validators.min(0.01)
-      ]],
+      amount: [
+        0,
+        [
+          Validators.required,
+          Validators.min(0.01)
+        ]
+      ],
 
       category: ['', Validators.required],
 
@@ -53,6 +83,8 @@ export class Transactions implements OnInit {
         Validators.required
       ]
     });
+
+    this.updateSuggestedCategories('expense');
   }
 
   ngOnInit(): void {
@@ -79,6 +111,32 @@ export class Transactions implements OnInit {
     });
   }
 
+  onTypeChange(): void {
+    const type =
+      this.transactionForm.controls.type.value;
+
+    this.updateSuggestedCategories(type);
+
+    this.transactionForm.controls.category.setValue('');
+
+    this.successMessage = '';
+  }
+
+  private updateSuggestedCategories(
+    type: 'income' | 'expense'
+  ): void {
+    this.suggestedCategories =
+      type === 'income'
+        ? this.incomeCategories
+        : this.expenseCategories;
+  }
+
+  selectSuggestedCategory(category: string): void {
+    this.transactionForm.controls.category.setValue(category);
+
+    this.transactionForm.controls.category.markAsTouched();
+  }
+
   onSubmit(): void {
     this.errorMessage = '';
     this.successMessage = '';
@@ -91,7 +149,9 @@ export class Transactions implements OnInit {
     this.isSubmitting = true;
 
     this.transactionService
-      .createTransaction(this.transactionForm.getRawValue())
+      .createTransaction(
+        this.transactionForm.getRawValue()
+      )
       .subscribe({
         next: response => {
           this.transactions = [
@@ -111,6 +171,8 @@ export class Transactions implements OnInit {
             description: '',
             date: new Date().toISOString().split('T')[0]
           });
+
+          this.updateSuggestedCategories('expense');
         },
 
         error: (error: HttpErrorResponse) => {
@@ -135,22 +197,26 @@ export class Transactions implements OnInit {
       return;
     }
 
-    this.transactionService.deleteTransaction(id).subscribe({
-      next: () => {
-        this.transactions = this.transactions.filter(
-          transaction => transaction._id !== id
-        );
+    this.transactionService
+      .deleteTransaction(id)
+      .subscribe({
+        next: () => {
+          this.transactions =
+            this.transactions.filter(
+              transaction =>
+                transaction._id !== id
+            );
 
-        this.successMessage =
-          'Transaction deleted successfully.';
-      },
+          this.successMessage =
+            'Transaction deleted successfully.';
+        },
 
-      error: (error: HttpErrorResponse) => {
-        this.errorMessage =
-          error.error?.message ||
-          'Unable to delete transaction.';
-      }
-    });
+        error: (error: HttpErrorResponse) => {
+          this.errorMessage =
+            error.error?.message ||
+            'Unable to delete transaction.';
+        }
+      });
   }
 
   trackTransaction(

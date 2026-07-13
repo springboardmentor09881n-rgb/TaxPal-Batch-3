@@ -24,24 +24,20 @@
         <span>Total Income</span>
 
         <strong class="income-value">
-          ₹{{ totalIncome | number:'1.2-2' }}
+          &#8377;{{ totalIncome | number:'1.2-2' }}
         </strong>
 
-        <small>
-          Income recorded in your account
-        </small>
+        <small>Income recorded in your account</small>
       </article>
 
       <article class="summary-card">
         <span>Total Expenses</span>
 
         <strong class="expense-value">
-          ₹{{ totalExpenses | number:'1.2-2' }}
+          &#8377;{{ totalExpenses | number:'1.2-2' }}
         </strong>
 
-        <small>
-          Expenses recorded in your account
-        </small>
+        <small>Expenses recorded in your account</small>
       </article>
 
       <article class="summary-card">
@@ -51,24 +47,146 @@
           [class.income-value]="currentBalance >= 0"
           [class.expense-value]="currentBalance < 0"
         >
-          ₹{{ currentBalance | number:'1.2-2' }}
+          &#8377;{{ currentBalance | number:'1.2-2' }}
         </strong>
 
-        <small>
-          Income minus expenses
-        </small>
+        <small>Income minus expenses</small>
       </article>
 
       <article class="summary-card">
         <span>Total Transactions</span>
 
-        <strong>
-          {{ transactions.length }}
-        </strong>
+        <strong>{{ transactions.length }}</strong>
 
-        <small>
-          Saved transaction records
-        </small>
+        <small>Saved transaction records</small>
+      </article>
+    </section>
+
+    <section class="dashboard-charts">
+      <article class="chart-card">
+        <div class="chart-heading">
+          <div>
+            <h2>Expense Breakdown</h2>
+            <p>Category-wise distribution of your expenses.</p>
+          </div>
+
+          <strong class="expense-value">
+            &#8377;{{ totalExpenses | number:'1.2-2' }}
+          </strong>
+        </div>
+
+        <p
+          class="empty-message"
+          *ngIf="expenseChart.length === 0"
+        >
+          No expense transactions available.
+        </p>
+
+        <div
+          class="expense-chart"
+          *ngIf="expenseChart.length > 0"
+        >
+          <div
+            class="expense-chart-row"
+            *ngFor="
+              let item of expenseChart;
+              trackBy: trackExpenseItem
+            "
+          >
+            <div class="expense-chart-label">
+              <div>
+                <strong>{{ item.category }}</strong>
+
+                <small>
+                  {{ item.percentage | number:'1.0-1' }}%
+                  of expenses
+                </small>
+              </div>
+
+              <strong>
+                &#8377;{{ item.amount | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div class="expense-chart-track">
+              <div
+                class="expense-chart-bar"
+                [style.width.%]="item.barWidth"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-heading">
+          <div>
+            <h2>Income vs Expenses</h2>
+            <p>Distribution of your total cash flow.</p>
+          </div>
+        </div>
+
+        <div
+          class="cash-flow-empty"
+          *ngIf="totalIncome + totalExpenses === 0"
+        >
+          No transaction data available.
+        </div>
+
+        <div
+          class="donut-content"
+          *ngIf="totalIncome + totalExpenses > 0"
+        >
+          <div
+            class="donut-chart"
+            [style.background]="donutGradient"
+          >
+            <div class="donut-center">
+              <strong>
+                &#8377;{{
+                  totalIncome + totalExpenses |
+                  number:'1.2-2'
+                }}
+              </strong>
+
+              <span>Total Cash Flow</span>
+            </div>
+          </div>
+
+          <div class="donut-legend">
+            <div class="legend-item">
+              <span class="legend-dot income-dot"></span>
+
+              <div>
+                <span>Income</span>
+
+                <strong class="income-value">
+                  {{ incomePercentage | number:'1.0-1' }}%
+                </strong>
+
+                <small>
+                  &#8377;{{ totalIncome | number:'1.2-2' }}
+                </small>
+              </div>
+            </div>
+
+            <div class="legend-item">
+              <span class="legend-dot expense-dot"></span>
+
+              <div>
+                <span>Expenses</span>
+
+                <strong class="expense-value">
+                  {{ expensePercentage | number:'1.0-1' }}%
+                </strong>
+
+                <small>
+                  &#8377;{{ totalExpenses | number:'1.2-2' }}
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
     </section>
 
@@ -126,7 +244,7 @@
               [class.expense-value]="transaction.type === 'expense'"
             >
               {{ transaction.type === 'income' ? '+' : '-' }}
-              ₹{{ transaction.amount | number:'1.2-2' }}
+              &#8377;{{ transaction.amount | number:'1.2-2' }}
             </strong>
 
             <small>

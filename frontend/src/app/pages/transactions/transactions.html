@@ -25,7 +25,11 @@
         <div class="form-group">
           <label for="type">Transaction Type</label>
 
-          <select id="type" formControlName="type">
+          <select
+            id="type"
+            formControlName="type"
+            (change)="onTypeChange()"
+          >
             <option value="income">Income</option>
             <option value="expense">Expense</option>
           </select>
@@ -55,14 +59,36 @@
         </div>
 
         <div class="form-group">
+          <label>Suggested Categories</label>
+
+          <div class="category-suggestions">
+            <button
+              *ngFor="let category of suggestedCategories"
+              type="button"
+              class="category-chip"
+              [class.selected]="
+                transactionForm.controls.category.value === category
+              "
+              (click)="selectSuggestedCategory(category)"
+            >
+              {{ category }}
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label for="category">Category</label>
 
           <input
             id="category"
             type="text"
             formControlName="category"
-            placeholder="Salary, Food, Rent..."
+            placeholder="Select a suggestion or enter manually"
           />
+
+          <small class="category-help">
+            You can select a suggested category or enter your own.
+          </small>
 
           <small
             class="validation-error"
@@ -173,7 +199,7 @@
               [class.expense-amount]="transaction.type === 'expense'"
             >
               {{ transaction.type === 'income' ? '+' : '-' }}
-              ₹{{ transaction.amount | number:'1.2-2' }}
+              &#8377;{{ transaction.amount | number:'1.2-2' }}
             </strong>
 
             <button

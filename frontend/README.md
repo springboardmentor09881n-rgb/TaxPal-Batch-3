@@ -1,59 +1,191 @@
-# Frontend
+# 💰 TaxPal
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.19.
+A full-stack personal finance and tax management application built with **Angular**, **Node.js**, **Express.js**, and **MongoDB**. TaxPal helps users manage income, expenses, categories, and estimate taxes through a secure and user-friendly interface.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Features
 
-```bash
-ng serve
+### 🔐 Authentication
+- User Registration
+- User Login
+- JWT-based Authentication
+- Protected Routes
+
+### 📊 Dashboard
+- Overview of financial information
+- Quick navigation to application modules
+
+### 📂 Category Management
+- Add Categories
+- Edit Categories
+- Delete Categories
+- Income & Expense Categories
+- Duplicate Category Prevention
+- Automatic Category Creation from Transactions
+
+### 💳 Transaction Management
+- Add Transactions
+- Edit Transactions
+- Delete Transactions
+- Category Selection
+- Automatic Category Creation
+- Transaction History
+
+### 🧮 Tax Calculator
+- Tax estimation module
+- Backend tax calculation APIs
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+- Angular
+- TypeScript
+- HTML5
+- CSS3
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB
+
+### Authentication
+- JSON Web Token (JWT)
+
+---
+
+
+## 📁 Project Structure
+
+```text
+TaxPal-Batch-3
+│
+├── backend
+│   ├── src
+│   │   ├── controllers
+│   │   ├── middleware
+│   │   ├── models
+│   │   ├── routes
+│   │   ├── utils
+│   │   └── server.js
+│   └── package.json
+│
+├── frontend
+│   ├── src
+│   └── package.json
+│
+├── screenshots
+│   ├── login.png
+│   ├── signup.png
+│   ├── dashboard.png
+│   ├── categories.png
+│   ├── transactions.png
+│   ├── budget.png
+│   └── tax-calculator.png
+│
+└── README.md
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## ⚙️ Installation
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Clone the repository
 
 ```bash
-ng generate --help
+git clone <repository-url>
 ```
 
-## Building
-
-To build the project run:
+### Backend
 
 ```bash
-ng build
+cd backend
+npm install
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Backend runs on:
 
-## Running unit tests
+```
+http://localhost:5000
+```
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Frontend
 
 ```bash
-ng test
+cd frontend
+npm install
+npm start
 ```
 
-## Running end-to-end tests
+Frontend runs on:
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```
+http://localhost:4200
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## 🔑 Environment Variables
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Create a `.env` file inside the backend folder.
+
+Example:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
+
+---
+
+## 📷 Screenshots
+
+### Login
+![Login](screenshots/login.png)
+
+### Sign Up
+![Sign Up](screenshots/signup.png)
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Categories
+![Categories](screenshots/categories.png)
+
+### Transactions
+![Transactions](screenshots/transactions.png)
+
+### Budget
+![Budget](screenshots/budget.png)
+
+### Tax Calculator
+![Tax Calculator](screenshots/tax-calculator.png)
+
+---
+
+## 🎯 Future Enhancements
+
+- Budget Analytics
+- Charts & Graphs
+- Monthly Reports
+- Search & Filter Transactions
+- Export Reports
+- Responsive Dashboard
+
+---
+
+## 👨‍💻 Team
+
+Developed as part of the **Infosys Springboard Internship Project**.
+
+---
+
+## 📄 License
+
+This project is intended for educational purposes.

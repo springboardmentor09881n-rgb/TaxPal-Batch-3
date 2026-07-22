@@ -209,16 +209,17 @@ JWT_SECRET=your_secret_key
 
 Developed as part of the **Infosys Springboard Internship Project**.
 
-### Team Members
+### 🏷️ Team Name
 
-- Amit Yadav (Team Lead)
-- Member 2
-- Member 3
-- Member 4
-- Member 5
+**Team Navbharat**
 
-> Replace the placeholder names above with your teammates' actual names.
+### 👥 Team Members
 
+- **Amit Yadav** — GitHub: [@amityadav](https://github.com/amityadav)
+- **Member 2** — GitHub: [@username2](https://github.com/username2)
+- **Member 3** — GitHub: [@username3](https://github.com/username3)
+- **Member 4** — GitHub: [@username4](https://github.com/username4)
+- **Member 5** — GitHub: [@username5](https://github.com/username5)
 ---
 
 # 📄 License

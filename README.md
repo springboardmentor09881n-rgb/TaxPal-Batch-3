@@ -97,7 +97,7 @@ TaxPal-Batch-3
 ### Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/springboardmentor09881n-rgb/TaxPal-Batch-3.git
 ```
 
 ### Backend

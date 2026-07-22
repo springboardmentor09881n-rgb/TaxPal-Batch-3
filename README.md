@@ -209,15 +209,12 @@ JWT_SECRET=your_secret_key
 
 Developed as part of the **Infosys Springboard Internship Project**.
 
-### 🏷️ Team Name
-
-**Team Navbharat**
 
 ### 👥 Team Members
 
 - **Amit Yadav** — GitHub: [@amityadav](https://github.com/amityadav)
-- **Member 2** — GitHub: [@username2](https://github.com/username2)
-- **Member 3** — GitHub: [@username3](https://github.com/username3)
+- **MAYA SHATHI S** — GitHub: [@username2](https://github.com/Mayashathi04)
+- **Piyush Munde** — GitHub: [@username3](https://github.com/codingwithpiyush)
 - **Member 4** — GitHub: [@username4](https://github.com/username4)
 - **Member 5** — GitHub: [@username5](https://github.com/username5)
 ---

@@ -1,54 +1,191 @@
-# TaxPal — Personal Finance & Tax Estimator for Freelancers
+# 💰 TaxPal
 
-> A full-stack web application that helps freelancers and gig workers manage income, track expenses, set budgets, and prepare for tax season — all in one place.
-
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Modules](#modules)
-- [Tech Stack](#tech-stack)
-- [Database Schema](#database-schema)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
-- [Milestones](#milestones)
-- [Screenshots](#screenshots)
-- [Security](#security)
-- [Contributing](#contributing)
+A full-stack personal finance and tax management application built with **Angular**, **Node.js**, **Express.js**, and **MongoDB**. TaxPal helps users manage income, expenses, categories, and estimate taxes through a secure and user-friendly interface.
 
 ---
 
-## Overview
+## 🚀 Features
 
-TaxPal is designed for the modern freelancer who juggles multiple income streams, variable expenses, and quarterly tax obligations. It provides a clean, intuitive interface for logging every dollar in and out, organizing transactions by category, setting monthly spending budgets, and getting a clear picture of financial health — month by month.
+### 🔐 Authentication
+- User Registration
+- User Login
+- JWT-based Authentication
+- Protected Routes
 
-**Implemented Modules (Milestones 1 & 2):**
-- Module A — Income & Expense Management
-- Module B — Categorization & Budgeting
+### 📊 Dashboard
+- Overview of financial information
+- Quick navigation to application modules
+
+### 📂 Category Management
+- Add Categories
+- Edit Categories
+- Delete Categories
+- Income & Expense Categories
+- Duplicate Category Prevention
+- Automatic Category Creation from Transactions
+
+### 💳 Transaction Management
+- Add Transactions
+- Edit Transactions
+- Delete Transactions
+- Category Selection
+- Automatic Category Creation
+- Transaction History
+
+### 🧮 Tax Calculator
+- Tax estimation module
+- Backend tax calculation APIs
 
 ---
 
-## Features
+## 🛠 Tech Stack
 
-### Module A — Income & Expense Management
-- **Secure authentication** — Email/password sign-up and sign-in via Supabase Auth; sessions persist across page reloads
-- **Transaction logging** — Record income and expenses with description, amount, date, category, and optional notes
-- **Real-time dashboard** — Month-over-month stat cards for income, expenses, and net income with percentage change indicators
-- **6-month bar chart** — Visual comparison of income vs. expenses across the last 6 months with hover tooltips
-- **Recent transactions list** — Quick-glance view of the latest activity on the dashboard
-- **Search & filter** — Full-text search and type-based filtering (all / income / expense) on the Transactions page
-- **Delete with confirmation** — Safe deletion flow for any transaction
+### Frontend
+- Angular
+- TypeScript
+- HTML5
+- CSS3
 
-### Module B — Categorization & Budgeting
-- **Custom categories** — Create unlimited income and expense categories, each with a custom color
-- **Monthly budgets** — Set a spending limit per expense category for the current month
-- **Budget progress bars** — Visual progress bars that turn amber at 80% and red when over budget
-- **Over-budget alerts** — Clear callouts showing exactly how much over the limit spending has gone
-- **Spending by category** — Dashboard breakdown panel showing top expense categories and their share of total spending
-- **Total budget summary** — Aggregate view of all budgets combined with a single progress bar
-- **Profile management** — Update name, country, and income bracket in Settings
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB
+
+### Authentication
+- JSON Web Token (JWT)
 
 ---
+
+
+## 📁 Project Structure
+
+```text
+TaxPal-Batch-3
+│
+├── backend
+│   ├── src
+│   │   ├── controllers
+│   │   ├── middleware
+│   │   ├── models
+│   │   ├── routes
+│   │   ├── utils
+│   │   └── server.js
+│   └── package.json
+│
+├── frontend
+│   ├── src
+│   └── package.json
+│
+├── screenshots
+│   ├── login.png
+│   ├── signup.png
+│   ├── dashboard.png
+│   ├── categories.png
+│   ├── transactions.png
+│   ├── budget.png
+│   └── tax-calculator.png
+│
+└── README.md
+```
+
+---
+
+## ⚙️ Installation
+
+### Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+Backend runs on:
+
+```
+http://localhost:5000
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+Frontend runs on:
+
+```
+http://localhost:4200
+```
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env` file inside the backend folder.
+
+Example:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
+
+---
+
+## 📷 Screenshots
+
+### Login
+![Login](screenshots/login.png)
+
+### Sign Up
+![Sign Up](screenshots/signup.png)
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Categories
+![Categories](screenshots/categories.png)
+
+### Transactions
+![Transactions](screenshots/transactions.png)
+
+### Budget
+![Budget](screenshots/budget.png)
+
+### Tax Calculator
+![Tax Calculator](screenshots/tax-calculator.png)
+
+---
+
+## 🎯 Future Enhancements
+
+- Budget Analytics
+- Charts & Graphs
+- Monthly Reports
+- Search & Filter Transactions
+- Export Reports
+- Responsive Dashboard
+
+---
+
+## 👨‍💻 Team
+
+Developed as part of the **Infosys Springboard Internship Project**.
+
+---
+
+## 📄 License
+
+This project is intended for educational purposes.

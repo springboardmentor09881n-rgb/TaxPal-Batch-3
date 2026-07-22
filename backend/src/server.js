@@ -11,6 +11,8 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const budgetRoutes = require('./routes/budgetRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const taxRoutes = require('./routes/taxRoutes');
 
 const app = express();
 
@@ -20,6 +22,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/budgets', budgetRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/tax', taxRoutes);
 
 app.get('/', (req, res) => {
   res.json({

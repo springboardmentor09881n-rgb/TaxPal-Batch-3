@@ -22,6 +22,8 @@
         [formGroup]="transactionForm"
         (ngSubmit)="onSubmit()"
       >
+
+        <!-- Transaction Type -->
         <div class="form-group">
           <label for="type">Transaction Type</label>
 
@@ -35,6 +37,7 @@
           </select>
         </div>
 
+        <!-- Amount -->
         <div class="form-group">
           <label for="amount">Amount</label>
 
@@ -58,36 +61,53 @@
           </small>
         </div>
 
+        <!-- Suggested Categories -->
         <div class="form-group">
-          <label>Suggested Categories</label>
 
-          <div class="category-suggestions">
-            <button
+          <label for="suggestedCategory">
+            Suggested Categories
+          </label>
+
+          <select
+            id="suggestedCategory"
+            (change)="onSuggestedCategoryChange($event)"
+          >
+
+            <option value="">
+              -- Select Suggested Category --
+            </option>
+
+            <option
               *ngFor="let category of suggestedCategories"
-              type="button"
-              class="category-chip"
-              [class.selected]="
-                transactionForm.controls.category.value === category
-              "
-              (click)="selectSuggestedCategory(category)"
+              [value]="category"
             >
               {{ category }}
-            </button>
-          </div>
+            </option>
+
+          </select>
+
+          <small class="category-help">
+            Choose an existing category or type a new one below.
+          </small>
+
         </div>
 
+        <!-- Category -->
         <div class="form-group">
-          <label for="category">Category</label>
+
+          <label for="category">
+            Category
+          </label>
 
           <input
             id="category"
             type="text"
             formControlName="category"
-            placeholder="Select a suggestion or enter manually"
+            placeholder="Enter category"
           />
 
           <small class="category-help">
-            You can select a suggested category or enter your own.
+            If the category doesn't exist, it will be created automatically.
           </small>
 
           <small
@@ -99,10 +119,15 @@
           >
             Category is required.
           </small>
+
         </div>
 
+        <!-- Description -->
         <div class="form-group">
-          <label for="description">Description</label>
+
+          <label for="description">
+            Description
+          </label>
 
           <input
             id="description"
@@ -110,18 +135,25 @@
             formControlName="description"
             placeholder="Optional description"
           />
+
         </div>
 
+        <!-- Date -->
         <div class="form-group">
-          <label for="date">Date</label>
+
+          <label for="date">
+            Date
+          </label>
 
           <input
             id="date"
             type="date"
             formControlName="date"
           />
+
         </div>
 
+        <!-- Submit -->
         <button
           class="submit-button"
           type="submit"
@@ -129,11 +161,15 @@
         >
           {{ isSubmitting ? 'Adding...' : 'Add Transaction' }}
         </button>
+
       </form>
     </section>
 
+    <!-- Transaction History -->
     <section class="transaction-card transaction-list-card">
+
       <div class="list-heading">
+
         <div>
           <h2>Transaction History</h2>
           <p>{{ transactions.length }} transaction(s)</p>
@@ -147,9 +183,13 @@
         >
           Refresh
         </button>
+
       </div>
 
-      <p class="state-message" *ngIf="isLoading">
+      <p
+        class="state-message"
+        *ngIf="isLoading"
+      >
         Loading transactions...
       </p>
 
@@ -164,6 +204,7 @@
         class="transaction-list"
         *ngIf="!isLoading && transactions.length > 0"
       >
+
         <article
           class="transaction-item"
           *ngFor="
@@ -171,7 +212,9 @@
             trackBy: trackTransaction
           "
         >
+
           <div class="transaction-info">
+
             <div
               class="transaction-type"
               [class.income]="transaction.type === 'income'"
@@ -181,6 +224,7 @@
             </div>
 
             <div>
+
               <h3>{{ transaction.category }}</h3>
 
               <p>
@@ -190,16 +234,19 @@
               <small>
                 {{ transaction.date | date:'mediumDate' }}
               </small>
+
             </div>
+
           </div>
 
           <div class="transaction-actions">
+
             <strong
               [class.income-amount]="transaction.type === 'income'"
               [class.expense-amount]="transaction.type === 'expense'"
             >
               {{ transaction.type === 'income' ? '+' : '-' }}
-              &#8377;{{ transaction.amount | number:'1.2-2' }}
+              ₹{{ transaction.amount | number:'1.2-2' }}
             </strong>
 
             <button
@@ -209,9 +256,15 @@
             >
               Delete
             </button>
+
           </div>
+
         </article>
+
       </div>
+
     </section>
+
   </div>
+
 </section>

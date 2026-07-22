@@ -1,30 +1,30 @@
 # 💰 TaxPal
 
-A full-stack personal finance and tax management application built with **Angular**, **Node.js**, **Express.js**, and **MongoDB**. TaxPal helps users manage income, expenses, categories, and estimate taxes through a secure and user-friendly interface.
+TaxPal is a full-stack personal finance and tax management application built with **Angular**, **Node.js**, **Express.js**, and **MongoDB**. It enables users to securely manage income, expenses, categories, budgets, and estimate taxes through an intuitive and user-friendly interface.
 
 ---
 
-## 🚀 Features
+# 🚀 Features
 
-### 🔐 Authentication
+## 🔐 Authentication
 - User Registration
 - User Login
 - JWT-based Authentication
 - Protected Routes
 
-### 📊 Dashboard
-- Overview of financial information
-- Quick navigation to application modules
+## 📊 Dashboard
+- Financial Overview
+- Quick Navigation to Application Modules
 
-### 📂 Category Management
-- Add Categories
+## 📂 Category Management
+- Create Categories
 - Edit Categories
 - Delete Categories
 - Income & Expense Categories
 - Duplicate Category Prevention
 - Automatic Category Creation from Transactions
 
-### 💳 Transaction Management
+## 💳 Transaction Management
 - Add Transactions
 - Edit Transactions
 - Delete Transactions
@@ -32,13 +32,13 @@ A full-stack personal finance and tax management application built with **Angula
 - Automatic Category Creation
 - Transaction History
 
-### 🧮 Tax Calculator
-- Tax estimation module
-- Backend tax calculation APIs
+## 🧮 Tax Calculator
+- Tax Estimation
+- Backend Tax Calculation APIs
 
 ---
 
-## 🛠 Tech Stack
+# 🛠 Tech Stack
 
 ### Frontend
 - Angular
@@ -49,6 +49,7 @@ A full-stack personal finance and tax management application built with **Angula
 ### Backend
 - Node.js
 - Express.js
+- REST APIs
 
 ### Database
 - MongoDB
@@ -56,10 +57,15 @@ A full-stack personal finance and tax management application built with **Angula
 ### Authentication
 - JSON Web Token (JWT)
 
+### Tools
+- Git
+- GitHub
+- VS Code
+- Postman
+
 ---
 
-
-## 📁 Project Structure
+# 📁 Project Structure
 
 ```text
 TaxPal-Batch-3
@@ -92,15 +98,32 @@ TaxPal-Batch-3
 
 ---
 
-## ⚙️ Installation
+# 📋 Prerequisites
 
-### Clone the repository
+Before running the project, ensure you have the following installed:
+
+- Node.js (v18 or later)
+- npm
+- MongoDB (Local or MongoDB Atlas)
+- Git
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/springboardmentor09881n-rgb/TaxPal-Batch-3.git
 ```
 
-### Backend
+## 2. Navigate to the Project Directory
+
+```bash
+cd TaxPal-Batch-3
+```
+
+## 3. Backend Setup
 
 ```bash
 cd backend
@@ -108,13 +131,15 @@ npm install
 npm start
 ```
 
-Backend runs on:
+Backend runs at:
 
 ```
 http://localhost:5000
 ```
 
-### Frontend
+## 4. Frontend Setup
+
+Open another terminal and run:
 
 ```bash
 cd frontend
@@ -122,7 +147,7 @@ npm install
 npm start
 ```
 
-Frontend runs on:
+Frontend runs at:
 
 ```
 http://localhost:4200
@@ -130,11 +155,9 @@ http://localhost:4200
 
 ---
 
-## 🔑 Environment Variables
+# 🔑 Environment Variables
 
-Create a `.env` file inside the backend folder.
-
-Example:
+Create a `.env` file inside the **backend** directory and add the following variables:
 
 ```env
 PORT=5000
@@ -144,7 +167,7 @@ JWT_SECRET=your_secret_key
 
 ---
 
-## 📷 Screenshots
+# 📷 Screenshots
 
 ### Login
 ![Login](screenshots/login.png)
@@ -169,23 +192,35 @@ JWT_SECRET=your_secret_key
 
 ---
 
-## 🎯 Future Enhancements
+# 🎯 Future Enhancements
 
 - Budget Analytics
-- Charts & Graphs
-- Monthly Reports
+- Interactive Charts & Graphs
+- Monthly Financial Reports
 - Search & Filter Transactions
-- Export Reports
+- Export Reports (PDF/Excel)
 - Responsive Dashboard
+- Dark Mode
+- Multi-Currency Support
 
 ---
 
-## 👨‍💻 Team
+# 👨‍💻 Team
 
 Developed as part of the **Infosys Springboard Internship Project**.
 
+### Team Members
+
+- Amit Yadav (Team Lead)
+- Member 2
+- Member 3
+- Member 4
+- Member 5
+
+> Replace the placeholder names above with your teammates' actual names.
+
 ---
 
-## 📄 License
+# 📄 License
 
-This project is intended for educational purposes.
+This project was developed for educational purposes as part of the **Infosys Springboard Internship Program**.

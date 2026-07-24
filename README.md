@@ -222,4 +222,3 @@ Developed as part of the **Infosys Springboard Internship Project**.
 # 📄 License
 
 This project was developed for educational purposes as part of the **Infosys Springboard Internship Program**.
->>>>>>> amityadav

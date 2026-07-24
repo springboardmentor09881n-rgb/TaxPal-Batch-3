@@ -215,8 +215,8 @@ Developed as part of the **Infosys Springboard Internship Project**.
 - **Amit Yadav** — GitHub: [@amityadav](https://github.com/amityadav)
 - **MAYA SHATHI S** — GitHub: [@Mayashathi04](https://github.com/Mayashathi04)
 - **Piyush Munde** — GitHub: [@codingwithpiyush](https://github.com/codingwithpiyush)
-- **Sreeja Reddy Chowdavaram** — GitHub: [@username4](https://github.com/SreejaReddyChowdavaram)
-- **Keerthi M R** — GitHub: [@username5](https://github.com/keerthimr22)
+- **Sreeja Reddy Chowdavaram** — GitHub: [@SreejaReddyChowdavaram](https://github.com/SreejaReddyChowdavaram)
+- **Keerthi M R** — GitHub: [@keerthimr22](https://github.com/keerthimr22)
 ---
 
 # 📄 License

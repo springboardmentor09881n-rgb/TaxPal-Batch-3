@@ -212,7 +212,7 @@ Developed as part of the **Infosys Springboard Internship Project**.
 
 ### 👥 Team Members
 
-- **Amit Yadav** — GitHub: [@amityadav](https://github.com/amityadav)
+- **Amit Yadav** — GitHub: [@theamityadavv](https://github.com/theamityadavv)
 - **MAYA SHATHI S** — GitHub: [@Mayashathi04](https://github.com/Mayashathi04)
 - **Piyush Munde** — GitHub: [@codingwithpiyush](https://github.com/codingwithpiyush)
 - **Sreeja Reddy Chowdavaram** — GitHub: [@SreejaReddyChowdavaram](https://github.com/SreejaReddyChowdavaram)

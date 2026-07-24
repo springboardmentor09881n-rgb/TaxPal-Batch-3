@@ -1,0 +1,130 @@
+<div class="categories-container">
+
+  <h2>Category Management</h2>
+
+  <div
+    *ngIf="message"
+    class="message"
+    [class.success]="messageType==='success'"
+    [class.error]="messageType==='error'">
+
+    {{ message }}
+
+  </div>
+
+  <div class="tabs">
+
+    <button
+      (click)="changeType('expense')"
+      [class.active]="selectedType==='expense'">
+
+      Expense
+
+    </button>
+
+    <button
+      (click)="changeType('income')"
+      [class.active]="selectedType==='income'">
+
+      Income
+
+    </button>
+
+  </div>
+
+  <div class="category-form">
+
+    <input
+      type="text"
+      placeholder="Category Name"
+      [(ngModel)]="form.name">
+
+    <input
+      type="text"
+      placeholder="Description (Optional)"
+      [(ngModel)]="form.description">
+
+    <button (click)="saveCategory()">
+
+      {{ editingId ? 'Update Category' : 'Add Category' }}
+
+    </button>
+
+    <button
+      *ngIf="editingId"
+      type="button"
+      (click)="resetForm()">
+
+      Cancel
+
+    </button>
+
+  </div>
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>Name</th>
+
+        <th>Description</th>
+
+        <th>Actions</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let category of filteredCategories">
+
+        <td>
+
+          <strong>{{ category.name }}</strong>
+
+        </td>
+
+        <td>
+
+          {{ category.description || 'Auto-created from Transaction' }}
+
+        </td>
+
+        <td>
+
+          <button
+            (click)="editCategory(category)">
+
+            Edit
+
+          </button>
+
+          <button
+            (click)="deleteCategory(category._id!)">
+
+            Delete
+
+          </button>
+
+        </td>
+
+      </tr>
+
+      <tr *ngIf="filteredCategories.length===0">
+
+        <td colspan="3" class="empty">
+
+          No {{ selectedType }} categories available.
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>

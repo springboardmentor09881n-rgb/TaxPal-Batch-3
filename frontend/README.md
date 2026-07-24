@@ -1,25 +1,22 @@
-<<<<<<< HEAD
-
-=======
 # 💰 TaxPal
 
-TaxPal is a full-stack personal finance and tax management application built with **Angular**, **Node.js**, **Express.js**, and **MongoDB**. It enables users to securely manage income, expenses, categories, budgets, and estimate taxes through an intuitive and user-friendly interface.
+TaxPal is a full-stack personal finance and tax management application built with **Angular**, **Node.js**, **Express.js**, and **MongoDB**. It helps users securely manage income, expenses, categories, budgets, and estimate taxes through an intuitive and user-friendly interface.
 
 ---
 
-# 🚀 Features
+## 🚀 Features
 
-## 🔐 Authentication
+### 🔐 Authentication
 - User Registration
 - User Login
 - JWT-based Authentication
 - Protected Routes
 
-## 📊 Dashboard
-- Financial Overview
-- Quick Navigation to Application Modules
+### 📊 Dashboard
+- Financial overview
+- Quick access to application modules
 
-## 📂 Category Management
+### 📂 Category Management
 - Create Categories
 - Edit Categories
 - Delete Categories
@@ -27,7 +24,7 @@ TaxPal is a full-stack personal finance and tax management application built wit
 - Duplicate Category Prevention
 - Automatic Category Creation from Transactions
 
-## 💳 Transaction Management
+### 💳 Transaction Management
 - Add Transactions
 - Edit Transactions
 - Delete Transactions
@@ -35,13 +32,13 @@ TaxPal is a full-stack personal finance and tax management application built wit
 - Automatic Category Creation
 - Transaction History
 
-## 🧮 Tax Calculator
+### 🧮 Tax Calculator
 - Tax Estimation
 - Backend Tax Calculation APIs
 
 ---
 
-# 🛠 Tech Stack
+## 🛠 Tech Stack
 
 ### Frontend
 - Angular
@@ -60,15 +57,9 @@ TaxPal is a full-stack personal finance and tax management application built wit
 ### Authentication
 - JSON Web Token (JWT)
 
-### Tools
-- Git
-- GitHub
-- VS Code
-- Postman
-
 ---
 
-# 📁 Project Structure
+## 📁 Project Structure
 
 ```text
 TaxPal-Batch-3
@@ -101,32 +92,15 @@ TaxPal-Batch-3
 
 ---
 
-# 📋 Prerequisites
+## ⚙️ Installation
 
-Before running the project, ensure you have the following installed:
-
-- Node.js (v18 or later)
-- npm
-- MongoDB (Local or MongoDB Atlas)
-- Git
-
----
-
-# ⚙️ Installation
-
-## 1. Clone the Repository
+### Clone the Repository
 
 ```bash
 git clone https://github.com/springboardmentor09881n-rgb/TaxPal-Batch-3.git
 ```
 
-## 2. Navigate to the Project Directory
-
-```bash
-cd TaxPal-Batch-3
-```
-
-## 3. Backend Setup
+### Backend Setup
 
 ```bash
 cd backend
@@ -140,9 +114,7 @@ Backend runs at:
 http://localhost:5000
 ```
 
-## 4. Frontend Setup
-
-Open another terminal and run:
+### Frontend Setup
 
 ```bash
 cd frontend
@@ -158,9 +130,9 @@ http://localhost:4200
 
 ---
 
-# 🔑 Environment Variables
+## 🔑 Environment Variables
 
-Create a `.env` file inside the **backend** directory and add the following variables:
+Create a `.env` file inside the **backend** directory.
 
 ```env
 PORT=5000
@@ -170,7 +142,7 @@ JWT_SECRET=your_secret_key
 
 ---
 
-# 📷 Screenshots
+## 📷 Screenshots
 
 ### Login
 ![Login](screenshots/login.png)
@@ -195,7 +167,7 @@ JWT_SECRET=your_secret_key
 
 ---
 
-# 🎯 Future Enhancements
+## 🎯 Future Enhancements
 
 - Budget Analytics
 - Interactive Charts & Graphs
@@ -208,21 +180,12 @@ JWT_SECRET=your_secret_key
 
 ---
 
-# 👨‍💻 Team
+## 👨‍💻 Team
 
 Developed as part of the **Infosys Springboard Internship Project**.
 
-
-### 👥 Team Members
-
-- **Amit Yadav** — GitHub: [@amityadav](https://github.com/amityadav)
-- **MAYA SHATHI S** — GitHub: [@Mayashathi04](https://github.com/Mayashathi04)
-- **Piyush Munde** — GitHub: [@codingwithpiyush](https://github.com/codingwithpiyush)
-- **Member 4** — GitHub: [@username4](https://github.com/username4)
-- **Member 5** — GitHub: [@username5](https://github.com/username5)
 ---
 
-# 📄 License
+## 📄 License
 
-This project was developed for educational purposes as part of the **Infosys Springboard Internship Program**.
->>>>>>> amityadav
+This project is intended for educational purposes.

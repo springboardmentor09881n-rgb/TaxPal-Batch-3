@@ -1,0 +1,322 @@
+<section class="budgets-page">
+  <div class="page-header">
+    <div>
+      <h1>Budgets</h1>
+      <p>Set monthly spending limits and track your progress.</p>
+    </div>
+  </div>
+
+  <div
+    *ngIf="errorMessage"
+    class="message error-message"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <div
+    *ngIf="successMessage"
+    class="message success-message"
+  >
+    {{ successMessage }}
+  </div>
+
+  <div class="budget-card">
+    <h2>Set Monthly Budget</h2>
+
+    <form
+      [formGroup]="budgetForm"
+      (ngSubmit)="onSubmit()"
+      class="budget-form"
+    >
+      <div class="form-group">
+        <label for="category">Category</label>
+
+        <select
+          id="category"
+          formControlName="category"
+        >
+          <option value="">Select category</option>
+
+          <option
+            *ngFor="let category of categories"
+            [value]="category"
+          >
+            {{ category }}
+          </option>
+        </select>
+
+        <small
+          *ngIf="
+            budgetForm.controls.category.touched &&
+            budgetForm.controls.category.invalid
+          "
+        >
+          Please select a category.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="monthlyLimit">Monthly Limit</label>
+
+        <input
+          id="monthlyLimit"
+          type="number"
+          min="0.01"
+          step="0.01"
+          formControlName="monthlyLimit"
+          placeholder="Enter monthly limit"
+        />
+
+        <small
+          *ngIf="
+            budgetForm.controls.monthlyLimit.touched &&
+            budgetForm.controls.monthlyLimit.invalid
+          "
+        >
+          Enter a monthly limit greater than 0.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="month">Month</label>
+
+        <select
+          id="month"
+          formControlName="month"
+          (change)="onPeriodChange()"
+        >
+          <option
+            *ngFor="let month of months"
+            [ngValue]="month.value"
+          >
+            {{ month.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="year">Year</label>
+
+        <select
+          id="year"
+          formControlName="year"
+          (change)="onPeriodChange()"
+        >
+          <option
+            *ngFor="let year of years"
+            [ngValue]="year"
+          >
+            {{ year }}
+          </option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        class="primary-button"
+        [disabled]="isSaving"
+      >
+        {{ isSaving ? 'Saving...' : 'Save Budget' }}
+      </button>
+    </form>
+  </div>
+
+  <div class="budget-card">
+    <div class="list-header">
+      <div>
+        <h2>Budget Progress</h2>
+
+        <p>
+          {{ getMonthName(budgetForm.controls.month.value) }}
+          {{ budgetForm.controls.year.value }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="loadBudgetData()"
+      >
+        Refresh
+      </button>
+    </div>
+
+    <p *ngIf="isLoading">
+      Loading budget progress...
+    </p>
+
+    <p
+      *ngIf="
+        !isLoading &&
+        budgetProgress.length === 0
+      "
+      class="empty-message"
+    >
+      No budgets set for this month.
+    </p>
+
+    <div
+      *ngIf="
+        !isLoading &&
+        budgetProgress.length > 0
+      "
+      class="budget-list"
+    >
+      <article
+        *ngFor="
+          let item of budgetProgress;
+          trackBy: trackBudgetProgress
+        "
+        class="budget-item progress-item"
+      >
+        <div class="budget-progress-content">
+          <div class="budget-progress-header">
+            <div>
+              <h3>{{ item.budget.category }}</h3>
+
+              <p>
+                Monthly limit:
+                &#8377;{{
+                  item.budget.monthlyLimit |
+                    number:'1.2-2'
+                }}
+              </p>
+            </div>
+
+            <span
+              class="budget-status"
+              [class.over-budget-status]="item.isOverBudget"
+            >
+              {{
+                item.isOverBudget
+                  ? 'Over Budget'
+                  : 'Within Budget'
+              }}
+            </span>
+          </div>
+
+          <div class="progress-track">
+            <div
+              class="progress-fill"
+              [class.over-budget-progress]="item.isOverBudget"
+              [style.width.%]="item.progressWidth"
+            ></div>
+          </div>
+
+          <div class="progress-details">
+            <div>
+              <span>Spent</span>
+
+              <strong>
+                &#8377;{{ item.spent | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Remaining</span>
+
+              <strong>
+                &#8377;{{ item.remaining | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Used</span>
+
+              <strong>
+                {{ item.percentage | number:'1.0-1' }}%
+              </strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="budget-actions">
+          <button
+            type="button"
+            class="edit-button"
+            (click)="editBudget(item.budget)"
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="delete-button"
+            (click)="deleteBudget(item.budget)"
+          >
+            Delete
+          </button>
+        </div>
+      </article>
+    </div>
+  </div>
+<div class="budget-card spending-chart-card">
+  <div class="list-header">
+    <div>
+      <h2>Spending Chart</h2>
+
+      <p>
+        Category-wise expenses for
+        {{ getMonthName(budgetForm.controls.month.value) }}
+        {{ budgetForm.controls.year.value }}
+      </p>
+    </div>
+
+    <div class="total-spending">
+      <span>Total Spending</span>
+
+      <strong>
+        &#8377;{{ totalMonthlySpending | number:'1.2-2' }}
+      </strong>
+    </div>
+  </div>
+
+  <p
+    *ngIf="
+      !isLoading &&
+      spendingChart.length === 0
+    "
+    class="empty-message"
+  >
+    No expense transactions found for this month.
+  </p>
+
+  <div
+    *ngIf="
+      !isLoading &&
+      spendingChart.length > 0
+    "
+    class="spending-chart"
+  >
+    <div
+      *ngFor="
+        let item of spendingChart;
+        trackBy: trackSpendingItem
+      "
+      class="spending-chart-row"
+    >
+      <div class="chart-label-row">
+        <div>
+          <strong>{{ item.category }}</strong>
+
+          <span>
+            {{ item.percentage | number:'1.0-1' }}%
+            of monthly spending
+          </span>
+        </div>
+
+        <strong>
+          &#8377;{{ item.amount | number:'1.2-2' }}
+        </strong>
+      </div>
+
+      <div class="chart-track">
+        <div
+          class="chart-bar"
+          [style.width.%]="item.barWidth"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

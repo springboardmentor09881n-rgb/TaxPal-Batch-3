@@ -78,8 +78,10 @@ const calculateTax = async (req, res) => {
       taxableIncome: numericIncome,
       estimatedTax,
       effectiveTaxRate,
-      slabBreakdown
+      slabBreakdown,
+      advanceTaxDueDates: taxRule.advanceTaxDueDates
     });
+
   } catch (error) {
     console.error(
       'Calculate tax error:',
@@ -172,6 +174,7 @@ const saveTaxEstimate = async (req, res) => {
       message: 'Tax estimate saved successfully',
       taxEstimate
     });
+
   } catch (error) {
     console.error(
       'Save tax estimate error:',
@@ -196,6 +199,7 @@ const getTaxEstimates = async (req, res) => {
       count: taxEstimates.length,
       taxEstimates
     });
+
   } catch (error) {
     console.error(
       'Get tax estimates error:',
@@ -210,11 +214,10 @@ const getTaxEstimates = async (req, res) => {
 
 const deleteTaxEstimate = async (req, res) => {
   try {
-    const taxEstimate =
-      await TaxEstimate.findOneAndDelete({
-        _id: req.params.id,
-        user: req.userId
-      });
+    const taxEstimate = await TaxEstimate.findOneAndDelete({
+      _id: req.params.id,
+      user: req.userId
+    });
 
     if (!taxEstimate) {
       return res.status(404).json({
@@ -225,6 +228,7 @@ const deleteTaxEstimate = async (req, res) => {
     return res.status(200).json({
       message: 'Tax estimate deleted successfully'
     });
+
   } catch (error) {
     console.error(
       'Delete tax estimate error:',

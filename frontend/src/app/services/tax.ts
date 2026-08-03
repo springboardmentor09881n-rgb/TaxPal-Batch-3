@@ -12,6 +12,13 @@ export interface SlabBreakdown {
   taxAmount: number;
 }
 
+export interface AdvanceTaxDueDate {
+  month: number;
+  day: number;
+  cumulativePercentage: number;
+  label: string;
+}
+
 export interface TaxCalculationData {
   country: string;
   region: string;
@@ -30,6 +37,7 @@ export interface TaxCalculationResult {
   estimatedTax: number;
   effectiveTaxRate: number;
   slabBreakdown: SlabBreakdown[];
+  advanceTaxDueDates: AdvanceTaxDueDate[];
 }
 
 export interface TaxEstimate {

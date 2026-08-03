@@ -18,6 +18,8 @@
   </div>
 
   <div class="tax-layout">
+
+    <!-- Calculator -->
     <section class="tax-card calculator-card">
       <h2>Calculate Estimated Tax</h2>
 
@@ -27,6 +29,7 @@
         class="tax-form"
       >
         <div class="form-grid">
+
           <div class="form-group">
             <label for="country">Country</label>
 
@@ -44,7 +47,7 @@
             <label for="region">State / Region</label>
 
             <select id="region" formControlName="region">
-              <option value="">Select state / region</option>
+              <option value="">Select State / Region</option>
 
               <option
                 *ngFor="let region of regions"
@@ -82,14 +85,16 @@
           </div>
 
           <div class="form-group income-group">
-            <label for="taxableIncome">Taxable Income</label>
+            <label for="taxableIncome">
+              Taxable Income
+            </label>
 
             <input
               id="taxableIncome"
               type="number"
+              formControlName="taxableIncome"
               min="0"
               step="1000"
-              formControlName="taxableIncome"
               placeholder="Enter taxable income"
             />
 
@@ -103,6 +108,7 @@
               Enter a valid taxable income.
             </small>
           </div>
+
         </div>
 
         <button
@@ -112,14 +118,18 @@
         >
           {{ isCalculating ? 'Calculating...' : 'Calculate Tax' }}
         </button>
+
       </form>
     </section>
 
+    <!-- Result -->
     <section
       *ngIf="calculationResult"
       class="tax-card result-card"
     >
+
       <div class="result-heading">
+
         <div>
           <h2>Tax Estimate</h2>
 
@@ -131,21 +141,22 @@
         </div>
 
         <button
-          type="button"
           class="save-button"
           (click)="saveEstimate()"
           [disabled]="isSaving"
         >
           {{ isSaving ? 'Saving...' : 'Save Estimate' }}
         </button>
+
       </div>
 
       <div class="result-summary">
+
         <article class="result-summary-card">
           <span>Taxable Income</span>
 
           <strong>
-            &#8377;{{ calculationResult.taxableIncome | number:'1.2-2' }}
+            ₹{{ calculationResult.taxableIncome | number:'1.2-2' }}
           </strong>
         </article>
 
@@ -153,7 +164,7 @@
           <span>Estimated Tax</span>
 
           <strong class="tax-value">
-            &#8377;{{ calculationResult.estimatedTax | number:'1.2-2' }}
+            ₹{{ calculationResult.estimatedTax | number:'1.2-2' }}
           </strong>
         </article>
 
@@ -164,13 +175,17 @@
             {{ calculationResult.effectiveTaxRate | number:'1.2-2' }}%
           </strong>
         </article>
+
       </div>
 
       <div class="slab-section">
+
         <h3>Tax Slab Breakdown</h3>
 
         <div class="table-wrapper">
+
           <table class="slab-table">
+
             <thead>
               <tr>
                 <th>Income Slab</th>
@@ -181,51 +196,135 @@
             </thead>
 
             <tbody>
+
               <tr
                 *ngFor="
                   let slab of calculationResult.slabBreakdown;
                   trackBy: trackSlab
                 "
               >
+
                 <td>{{ slab.label }}</td>
 
                 <td>
-                  &#8377;{{ slab.taxableAmount | number:'1.2-2' }}
+                  ₹{{ slab.taxableAmount | number:'1.2-2' }}
                 </td>
 
-                <td>
-                  {{ slab.rate | number:'1.0-2' }}%
-                </td>
+                <td>{{ slab.rate }}%</td>
 
                 <td>
-                  &#8377;{{ slab.taxAmount | number:'1.2-2' }}
+                  ₹{{ slab.taxAmount | number:'1.2-2' }}
                 </td>
+
               </tr>
+
             </tbody>
+
           </table>
+
         </div>
+
       </div>
+
     </section>
+
   </div>
 
+  <!-- NEW: Quarterly Advance Tax Schedule -->
+
+  <section
+    *ngIf="advanceTaxDueDates.length > 0"
+    class="tax-card"
+  >
+
+    <h2>📅 Quarterly Advance Tax Schedule</h2>
+
+    <p>
+      Pay advance tax before these due dates.
+    </p>
+
+    <div class="table-wrapper">
+
+      <table class="slab-table">
+
+        <thead>
+          <tr>
+            <th>Due Date</th>
+            <th>Milestone</th>
+            <th>Cumulative Tax</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let dueDate of advanceTaxDueDates;
+              trackBy: trackDueDate
+            "
+          >
+
+            <td>
+              {{ dueDate.day }}/{{ dueDate.month }}
+            </td>
+
+            <td>
+              {{ dueDate.label }}
+            </td>
+
+            <td>
+              {{ dueDate.cumulativePercentage }}%
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <div
+      style="
+        margin-top:20px;
+        padding:16px;
+        border-radius:8px;
+        background:#fff3cd;
+        color:#856404;
+      "
+    >
+      <strong>Reminder</strong><br>
+
+      Pay your advance tax before the due date to avoid
+      interest and penalties.
+    </div>
+
+  </section>
+
+  <!-- Saved Estimates -->
+
   <section class="tax-card history-card">
+
     <div class="history-heading">
+
       <div>
+
         <h2>Saved Tax Estimates</h2>
 
         <p>
           Review your previously saved tax calculations.
         </p>
+
       </div>
 
       <button
-        type="button"
         class="secondary-button"
         (click)="loadTaxEstimates()"
         [disabled]="isLoadingHistory"
       >
         Refresh
       </button>
+
     </div>
 
     <p
@@ -252,6 +351,7 @@
       "
       class="estimate-list"
     >
+
       <article
         *ngFor="
           let estimate of taxEstimates;
@@ -259,66 +359,88 @@
         "
         class="estimate-item"
       >
+
         <div class="estimate-main">
+
           <div>
+
             <h3>
+
               {{ estimate.country }}
 
               <span *ngIf="estimate.region">
                 &middot; {{ estimate.region }}
               </span>
+
             </h3>
 
             <p>
+
               {{ estimate.taxYear }}
+
               &middot;
+
               {{
                 estimate.taxRegime === 'new'
                   ? 'New Tax Regime'
                   : estimate.taxRegime
               }}
+
             </p>
 
             <small>
               Saved {{ estimate.createdAt | date:'medium' }}
             </small>
+
           </div>
 
           <div class="estimate-values">
+
             <div>
+
               <span>Taxable Income</span>
 
               <strong>
-                &#8377;{{ estimate.taxableIncome | number:'1.2-2' }}
+                ₹{{ estimate.taxableIncome | number:'1.2-2' }}
               </strong>
+
             </div>
 
             <div>
+
               <span>Estimated Tax</span>
 
               <strong class="tax-value">
-                &#8377;{{ estimate.estimatedTax | number:'1.2-2' }}
+                ₹{{ estimate.estimatedTax | number:'1.2-2' }}
               </strong>
+
             </div>
 
             <div>
+
               <span>Effective Rate</span>
 
               <strong>
                 {{ estimate.effectiveTaxRate | number:'1.2-2' }}%
               </strong>
+
             </div>
+
           </div>
+
         </div>
 
         <button
-          type="button"
           class="delete-button"
           (click)="deleteEstimate(estimate)"
         >
           Delete
         </button>
+
       </article>
+
     </div>
+
   </section>
+
 </section>

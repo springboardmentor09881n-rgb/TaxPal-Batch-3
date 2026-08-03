@@ -12,6 +12,7 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 
 import {
+  AdvanceTaxDueDate,
   TaxCalculationData,
   TaxCalculationResult,
   TaxEstimate,
@@ -28,8 +29,12 @@ import {
   styleUrl: './tax-calculator.css'
 })
 export class TaxCalculator implements OnInit {
+
   calculationResult: TaxCalculationResult | null = null;
+
   taxEstimates: TaxEstimate[] = [];
+
+  advanceTaxDueDates: AdvanceTaxDueDate[] = [];
 
   readonly countries = [
     'India'
@@ -139,6 +144,7 @@ export class TaxCalculator implements OnInit {
   }
 
   calculateTax(): void {
+
     this.errorMessage = '';
     this.successMessage = '';
 
@@ -154,14 +160,21 @@ export class TaxCalculator implements OnInit {
       this.taxForm.getRawValue();
 
     this.taxService.calculateTax(data).subscribe({
+
       next: response => {
+
         this.calculationResult = response;
+
+        this.advanceTaxDueDates =
+          response.advanceTaxDueDates || [];
+
         this.isCalculating = false;
 
         this.changeDetectorRef.detectChanges();
       },
 
       error: (error: HttpErrorResponse) => {
+
         this.isCalculating = false;
 
         this.errorMessage =
@@ -174,6 +187,7 @@ export class TaxCalculator implements OnInit {
   }
 
   saveEstimate(): void {
+
     this.errorMessage = '';
     this.successMessage = '';
 
@@ -190,7 +204,9 @@ export class TaxCalculator implements OnInit {
       this.taxForm.getRawValue();
 
     this.taxService.saveTaxEstimate(data).subscribe({
+
       next: response => {
+
         this.isSaving = false;
 
         this.successMessage = response.message;
@@ -204,6 +220,7 @@ export class TaxCalculator implements OnInit {
       },
 
       error: (error: HttpErrorResponse) => {
+
         this.isSaving = false;
 
         this.errorMessage =
@@ -216,18 +233,24 @@ export class TaxCalculator implements OnInit {
   }
 
   loadTaxEstimates(): void {
+
     this.isLoadingHistory = true;
+
     this.errorMessage = '';
 
     this.taxService.getTaxEstimates().subscribe({
+
       next: response => {
+
         this.taxEstimates = response.taxEstimates;
+
         this.isLoadingHistory = false;
 
         this.changeDetectorRef.detectChanges();
       },
 
       error: (error: HttpErrorResponse) => {
+
         this.isLoadingHistory = false;
 
         this.errorMessage =
@@ -240,6 +263,7 @@ export class TaxCalculator implements OnInit {
   }
 
   deleteEstimate(estimate: TaxEstimate): void {
+
     const confirmed = window.confirm(
       'Delete this saved tax estimate?'
     );
@@ -254,7 +278,9 @@ export class TaxCalculator implements OnInit {
     this.taxService
       .deleteTaxEstimate(estimate._id)
       .subscribe({
+
         next: response => {
+
           this.taxEstimates =
             this.taxEstimates.filter(
               item => item._id !== estimate._id
@@ -266,6 +292,7 @@ export class TaxCalculator implements OnInit {
         },
 
         error: (error: HttpErrorResponse) => {
+
           this.errorMessage =
             error.error?.message ||
             'Unable to delete tax estimate.';
@@ -273,6 +300,30 @@ export class TaxCalculator implements OnInit {
           this.changeDetectorRef.detectChanges();
         }
       });
+  }
+
+  getNextDueDate(): AdvanceTaxDueDate | null {
+
+    if (this.advanceTaxDueDates.length === 0) {
+      return null;
+    }
+
+    const today = new Date();
+
+    for (const due of this.advanceTaxDueDates) {
+
+      const dueDate = new Date(
+        today.getFullYear(),
+        due.month - 1,
+        due.day
+      );
+
+      if (dueDate >= today) {
+        return due;
+      }
+    }
+
+    return this.advanceTaxDueDates[0];
   }
 
   trackEstimate(
@@ -290,4 +341,12 @@ export class TaxCalculator implements OnInit {
   ): string {
     return slab.label;
   }
+
+  trackDueDate(
+    index: number,
+    dueDate: AdvanceTaxDueDate
+  ): string {
+    return dueDate.label;
+  }
+
 }

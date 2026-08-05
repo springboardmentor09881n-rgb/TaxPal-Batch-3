@@ -61,24 +61,59 @@ const setBudget = async (req, res) => {
       });
     }
 
-    const budget = await Budget.findOneAndUpdate(
-      {
+    const { id } = req.body;
+
+    const existingBudget = await Budget.findOne({
+      user: req.userId,
+      category: normalizedCategory,
+      month: numericMonth,
+      year: numericYear
+    });
+
+    if (existingBudget) {
+      if (!id || existingBudget._id.toString() !== id) {
+        return res.status(400).json({
+          message: 'Budget already exists for this category in the selected month and year.'
+        });
+      }
+    }
+
+    let budget;
+
+    if (id) {
+      budget = await Budget.findOneAndUpdate(
+        {
+          _id: id,
+          user: req.userId
+        },
+        {
+          $set: {
+            category: normalizedCategory,
+            monthlyLimit: numericLimit,
+            month: numericMonth,
+            year: numericYear
+          }
+        },
+        {
+          new: true,
+          runValidators: true
+        }
+      );
+
+      if (!budget) {
+        return res.status(404).json({
+          message: 'Budget not found'
+        });
+      }
+    } else {
+      budget = await Budget.create({
         user: req.userId,
         category: normalizedCategory,
+        monthlyLimit: numericLimit,
         month: numericMonth,
         year: numericYear
-      },
-      {
-        $set: {
-          monthlyLimit: numericLimit
-        }
-      },
-      {
-        new: true,
-        upsert: true,
-        runValidators: true
-      }
-    );
+      });
+    }
 
     return res.status(200).json({
       message: 'Budget saved successfully',

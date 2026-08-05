@@ -16,6 +16,7 @@ export interface Budget {
 }
 
 export interface SaveBudgetData {
+  id?: string;
   category: string;
   monthlyLimit: number;
   month: number;

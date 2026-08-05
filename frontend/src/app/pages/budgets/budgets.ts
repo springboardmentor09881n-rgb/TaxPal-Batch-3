@@ -22,6 +22,11 @@ import {
   TransactionService
 } from '../../services/transaction';
 
+import {
+  Category,
+  CategoryService
+} from '../../services/category.service';
+
 export interface BudgetProgress {
   budget: Budget;
   spent: number;
@@ -56,17 +61,7 @@ export class Budgets implements OnInit {
 
   totalMonthlySpending = 0;
 
-  readonly categories = [
-    'Food',
-    'Rent',
-    'Transport',
-    'Shopping',
-    'Bills',
-    'Healthcare',
-    'Education',
-    'Entertainment',
-    'Other'
-  ];
+  categories: string[] = [];
 
   readonly months = [
     { value: 1, name: 'January' },
@@ -87,6 +82,7 @@ export class Budgets implements OnInit {
 
   isLoading = false;
   isSaving = false;
+  editingBudgetId: string | null = null;
 
   errorMessage = '';
   successMessage = '';
@@ -97,6 +93,7 @@ export class Budgets implements OnInit {
     private formBuilder: FormBuilder,
     private budgetService: BudgetService,
     private transactionService: TransactionService,
+    private categoryService: CategoryService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     const currentDate = new Date();
@@ -140,7 +137,33 @@ export class Budgets implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadBudgetData();
+    this.loadCategoriesAndBudgets();
+  }
+
+  loadCategoriesAndBudgets(): void {
+    this.categoryService.getCategories().subscribe({
+      next: response => {
+        this.categories = (response.categories || [])
+          .filter((cat: Category) => cat.type === 'expense')
+          .map((cat: Category) => cat.name);
+        this.loadBudgetData();
+      },
+      error: () => {
+        this.errorMessage = 'Unable to load categories.';
+        this.loadBudgetData();
+      }
+    });
+  }
+
+  get availableCategories(): string[] {
+    const month = this.budgetForm.controls.month.value;
+    const year = this.budgetForm.controls.year.value;
+
+    const usedCategories = this.budgets
+      .filter(budget => budget.month === month && budget.year === year && budget._id !== this.editingBudgetId)
+      .map(budget => budget.category.toLowerCase());
+
+    return this.categories.filter(category => !usedCategories.includes(category.toLowerCase()));
   }
 
   loadBudgetData(): void {
@@ -168,6 +191,11 @@ export class Budgets implements OnInit {
 
         this.calculateBudgetProgress(month, year);
         this.calculateSpendingChart(month, year);
+
+        const currentCategory = this.budgetForm.controls.category.value;
+        if (currentCategory && !this.availableCategories.includes(currentCategory)) {
+          this.budgetForm.controls.category.setValue('');
+        }
 
         this.isLoading = false;
 
@@ -347,6 +375,8 @@ export class Budgets implements OnInit {
 
   onPeriodChange(): void {
     this.successMessage = '';
+    this.editingBudgetId = null;
+    this.budgetForm.controls.category.setValue('');
     this.loadBudgetData();
   }
 
@@ -364,19 +394,26 @@ export class Budgets implements OnInit {
 
     this.isSaving = true;
 
+    const data: any = {
+      category: formValue.category,
+      monthlyLimit: formValue.monthlyLimit,
+      month: formValue.month,
+      year: formValue.year
+    };
+
+    if (this.editingBudgetId) {
+      data.id = this.editingBudgetId;
+    }
+
     this.budgetService
-      .saveBudget({
-        category: formValue.category,
-        monthlyLimit: formValue.monthlyLimit,
-        month: formValue.month,
-        year: formValue.year
-      })
+      .saveBudget(data)
       .subscribe({
         next: response => {
           this.isSaving = false;
 
           this.successMessage = response.message;
 
+          this.editingBudgetId = null;
           this.budgetForm.controls.category.setValue('');
           this.budgetForm.controls.monthlyLimit.setValue(0);
 
@@ -398,6 +435,7 @@ export class Budgets implements OnInit {
   editBudget(budget: Budget): void {
     this.errorMessage = '';
     this.successMessage = '';
+    this.editingBudgetId = budget._id;
 
     this.budgetForm.setValue({
       category: budget.category,

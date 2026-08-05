@@ -83,6 +83,11 @@
   font-weight:600;
 }
 
+.category-form button:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .category-form button:first-of-type{
   background:#2563eb;
   color:white;

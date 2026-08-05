@@ -102,14 +102,7 @@ export class Categories implements OnInit {
     );
 
     if (!name) {
-
-      this.showMessage(
-        'Category name is required.',
-        'error'
-      );
-
       return;
-
     }
 
     const duplicate = this.categories.find(category =>

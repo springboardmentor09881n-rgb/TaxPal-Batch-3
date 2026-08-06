@@ -23,19 +23,58 @@ const taxEstimateSchema = new mongoose.Schema(
 
     taxYear: {
       type: String,
-      required: true,
-      trim: true
+      trim: true,
+      default: 'FY 2025-26'
     },
 
     taxRegime: {
       type: String,
-      required: true,
+      trim: true,
+      default: 'Single'
+    },
+
+    filingStatus: {
+      type: String,
       trim: true
+    },
+
+    quarter: {
+      type: String,
+      trim: true
+    },
+
+    annualGrossIncome: {
+      type: Number,
+      default: 0
+    },
+
+    grossIncome: {
+      type: Number,
+      default: 0
+    },
+
+    deductions: {
+      businessExpenses: { type: Number, default: 0 },
+      retirementContributions: { type: Number, default: 0 },
+      healthInsurance: { type: Number, default: 0 },
+      homeOffice: { type: Number, default: 0 }
     },
 
     taxableIncome: {
       type: Number,
       required: true,
+      min: 0
+    },
+
+    estimatedAnnualTax: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+
+    estimatedQuarterlyTax: {
+      type: Number,
+      default: 0,
       min: 0
     },
 

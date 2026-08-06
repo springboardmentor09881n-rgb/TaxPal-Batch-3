@@ -12,12 +12,31 @@ export interface SlabBreakdown {
   taxAmount: number;
 }
 
+export interface AdvanceTaxDueDate {
+  month: number;
+  day: number;
+  label: string;
+  cumulativePercentage?: number;
+  percentage?: number;
+}
+
+export interface TaxDeductions {
+  businessExpenses: number;
+  retirementContributions: number;
+  healthInsurance: number;
+  homeOffice: number;
+}
+
 export interface TaxCalculationData {
   country: string;
   region: string;
-  taxYear: string;
-  taxRegime: string;
-  taxableIncome: number;
+  filingStatus: string;
+  quarter: string;
+  annualGrossIncome: number;
+  grossIncome: number;
+  deductions: TaxDeductions;
+  taxYear?: string;
+  taxRegime?: string;
 }
 
 export interface TaxCalculationResult {
@@ -25,11 +44,19 @@ export interface TaxCalculationResult {
   region: string;
   taxYear: string;
   taxRegime: string;
+  filingStatus: string;
+  quarter: string;
   taxRegimeLabel: string;
+  annualGrossIncome: number;
+  grossIncome: number;
+  deductions: TaxDeductions;
   taxableIncome: number;
+  estimatedAnnualTax: number;
+  estimatedQuarterlyTax: number;
   estimatedTax: number;
   effectiveTaxRate: number;
   slabBreakdown: SlabBreakdown[];
+  advanceTaxDueDates?: AdvanceTaxDueDate[];
 }
 
 export interface TaxEstimate {
@@ -39,7 +66,14 @@ export interface TaxEstimate {
   region: string;
   taxYear: string;
   taxRegime: string;
+  filingStatus: string;
+  quarter: string;
+  annualGrossIncome: number;
+  grossIncome: number;
+  deductions: TaxDeductions;
   taxableIncome: number;
+  estimatedAnnualTax: number;
+  estimatedQuarterlyTax: number;
   estimatedTax: number;
   effectiveTaxRate: number;
   slabBreakdown: SlabBreakdown[];

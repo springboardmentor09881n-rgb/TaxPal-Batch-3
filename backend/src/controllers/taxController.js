@@ -12,36 +12,51 @@ const calculateTax = async (req, res) => {
       region,
       taxYear,
       taxRegime,
-      taxableIncome
+      filingStatus,
+      quarter,
+      annualGrossIncome,
+      grossIncome,
+      deductions
     } = req.body;
 
-    if (
-      !country ||
-      !taxYear ||
-      !taxRegime ||
-      taxableIncome === undefined
-    ) {
+    if (!country) {
       return res.status(400).json({
-        message:
-          'Country, tax year, tax regime, and taxable income are required'
+        message: 'Country is required'
       });
     }
 
-    const numericIncome = Number(taxableIncome);
+    const numericAnnualGrossIncome = Number(annualGrossIncome) || 0;
+    const numericGrossIncome = Number(grossIncome) || 0;
 
-    if (
-      !Number.isFinite(numericIncome) ||
-      numericIncome < 0
-    ) {
+    if (numericAnnualGrossIncome < numericGrossIncome) {
       return res.status(400).json({
-        message: 'Taxable income must be 0 or greater'
+        message: 'Annual Gross Income cannot be less than Quarterly Gross Income'
       });
     }
+
+    if (numericAnnualGrossIncome < 0 || numericGrossIncome < 0) {
+      return res.status(400).json({
+        message: 'Incomes must be 0 or greater'
+      });
+    }
+
+    let totalDeductions = 0;
+    if (deductions) {
+      totalDeductions = 
+        (Number(deductions.businessExpenses) || 0) + 
+        (Number(deductions.retirementContributions) || 0) + 
+        (Number(deductions.healthInsurance) || 0) + 
+        (Number(deductions.homeOffice) || 0);
+    }
+
+    const numericAnnualTaxableIncome = Math.max(0, numericAnnualGrossIncome - totalDeductions);
 
     const normalizedCountry = country.trim();
     const normalizedRegion = region?.trim() || '';
-    const normalizedTaxYear = taxYear.trim();
-    const normalizedTaxRegime = taxRegime.trim();
+    const normalizedTaxYear = taxYear?.trim() || 'FY 2025-26';
+    const normalizedTaxRegime = filingStatus?.trim() || taxRegime?.trim() || 'Single';
+    const normalizedFilingStatus = filingStatus?.trim() || '';
+    const normalizedQuarter = quarter?.trim() || '';
 
     const taxRule = getTaxRule(
       normalizedCountry,
@@ -57,28 +72,40 @@ const calculateTax = async (req, res) => {
     }
 
     const {
-      estimatedTax,
+      estimatedTax: estimatedAnnualTax,
       slabBreakdown
     } = calculateSlabTax(
-      numericIncome,
+      numericAnnualTaxableIncome,
       taxRule.slabs
     );
 
     const effectiveTaxRate =
-      numericIncome > 0
-        ? (estimatedTax / numericIncome) * 100
+      numericAnnualTaxableIncome > 0
+        ? (estimatedAnnualTax / numericAnnualTaxableIncome) * 100
         : 0;
+
+    const estimatedQuarterlyTax = numericAnnualGrossIncome > 0 
+      ? estimatedAnnualTax * (numericGrossIncome / numericAnnualGrossIncome)
+      : 0;
 
     return res.status(200).json({
       country: normalizedCountry,
       region: normalizedRegion,
       taxYear: normalizedTaxYear,
       taxRegime: normalizedTaxRegime,
+      filingStatus: normalizedFilingStatus,
+      quarter: normalizedQuarter,
       taxRegimeLabel: taxRule.label,
-      taxableIncome: numericIncome,
-      estimatedTax,
+      annualGrossIncome: numericAnnualGrossIncome,
+      grossIncome: numericGrossIncome,
+      deductions: deductions || {},
+      taxableIncome: numericAnnualTaxableIncome,
+      estimatedAnnualTax,
+      estimatedQuarterlyTax,
+      estimatedTax: estimatedAnnualTax, // for legacy usage
       effectiveTaxRate,
-      slabBreakdown
+      slabBreakdown,
+      advanceTaxDueDates: taxRule.advanceTaxDueDates
     });
   } catch (error) {
     console.error(
@@ -99,36 +126,51 @@ const saveTaxEstimate = async (req, res) => {
       region,
       taxYear,
       taxRegime,
-      taxableIncome
+      filingStatus,
+      quarter,
+      annualGrossIncome,
+      grossIncome,
+      deductions
     } = req.body;
 
-    if (
-      !country ||
-      !taxYear ||
-      !taxRegime ||
-      taxableIncome === undefined
-    ) {
+    if (!country) {
       return res.status(400).json({
-        message:
-          'Country, tax year, tax regime, and taxable income are required'
+        message: 'Country is required'
       });
     }
 
-    const numericIncome = Number(taxableIncome);
+    const numericAnnualGrossIncome = Number(annualGrossIncome) || 0;
+    const numericGrossIncome = Number(grossIncome) || 0;
 
-    if (
-      !Number.isFinite(numericIncome) ||
-      numericIncome < 0
-    ) {
+    if (numericAnnualGrossIncome < numericGrossIncome) {
       return res.status(400).json({
-        message: 'Taxable income must be 0 or greater'
+        message: 'Annual Gross Income cannot be less than Quarterly Gross Income'
       });
     }
+
+    if (numericAnnualGrossIncome < 0 || numericGrossIncome < 0) {
+      return res.status(400).json({
+        message: 'Incomes must be 0 or greater'
+      });
+    }
+
+    let totalDeductions = 0;
+    if (deductions) {
+      totalDeductions = 
+        (Number(deductions.businessExpenses) || 0) + 
+        (Number(deductions.retirementContributions) || 0) + 
+        (Number(deductions.healthInsurance) || 0) + 
+        (Number(deductions.homeOffice) || 0);
+    }
+
+    const numericAnnualTaxableIncome = Math.max(0, numericAnnualGrossIncome - totalDeductions);
 
     const normalizedCountry = country.trim();
     const normalizedRegion = region?.trim() || '';
-    const normalizedTaxYear = taxYear.trim();
-    const normalizedTaxRegime = taxRegime.trim();
+    const normalizedTaxYear = taxYear?.trim() || 'FY 2025-26';
+    const normalizedTaxRegime = filingStatus?.trim() || taxRegime?.trim() || 'Single';
+    const normalizedFilingStatus = filingStatus?.trim() || '';
+    const normalizedQuarter = quarter?.trim() || '';
 
     const taxRule = getTaxRule(
       normalizedCountry,
@@ -144,17 +186,21 @@ const saveTaxEstimate = async (req, res) => {
     }
 
     const {
-      estimatedTax,
+      estimatedTax: estimatedAnnualTax,
       slabBreakdown
     } = calculateSlabTax(
-      numericIncome,
+      numericAnnualTaxableIncome,
       taxRule.slabs
     );
 
     const effectiveTaxRate =
-      numericIncome > 0
-        ? (estimatedTax / numericIncome) * 100
+      numericAnnualTaxableIncome > 0
+        ? (estimatedAnnualTax / numericAnnualTaxableIncome) * 100
         : 0;
+        
+    const estimatedQuarterlyTax = numericAnnualGrossIncome > 0 
+      ? estimatedAnnualTax * (numericGrossIncome / numericAnnualGrossIncome)
+      : 0;
 
     const taxEstimate = await TaxEstimate.create({
       user: req.userId,
@@ -162,8 +208,15 @@ const saveTaxEstimate = async (req, res) => {
       region: normalizedRegion,
       taxYear: normalizedTaxYear,
       taxRegime: normalizedTaxRegime,
-      taxableIncome: numericIncome,
-      estimatedTax,
+      filingStatus: normalizedFilingStatus,
+      quarter: normalizedQuarter,
+      annualGrossIncome: numericAnnualGrossIncome,
+      grossIncome: numericGrossIncome,
+      deductions: deductions || {},
+      taxableIncome: numericAnnualTaxableIncome,
+      estimatedAnnualTax,
+      estimatedQuarterlyTax,
+      estimatedTax: estimatedAnnualTax,
       effectiveTaxRate,
       slabBreakdown
     });

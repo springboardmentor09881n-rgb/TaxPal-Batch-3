@@ -7,6 +7,7 @@ import { Transactions } from './pages/transactions/transactions';
 import { Budgets } from './pages/budgets/budgets';
 import { Categories } from './pages/categories/categories';
 import { TaxCalculator } from './pages/tax-calculator/tax-calculator';
+import { Reports } from './pages/reports/reports';
 
 import { AppLayout } from './components/app-layout/app-layout';
 import { authGuard } from './guards/auth-guard';
@@ -49,6 +50,10 @@ export const routes: Routes = [
       {
         path: 'tax-calculator',
         component: TaxCalculator
+      },
+      {
+        path: 'reports',
+        component: Reports
       }
     ]
   },

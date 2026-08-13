@@ -36,6 +36,18 @@ TaxPal is a full-stack personal finance and tax management application built wit
 - Tax Estimation
 - Backend Tax Calculation APIs
 
+## 📈 Financial Reports & Exporting
+- Generate Income & Expense Reports
+- Filter by Time Period (Current Month, Last Month, YTD, etc.)
+- Export Reports to PDF (Print Layout)
+- Export Reports to CSV
+- Detailed Visual Previews
+
+## 🤖 AI Financial Assistant
+- Intelligent Chatbot powered by Google Gemini AI
+- Secure Context Injection (Reads your real transaction data)
+- Answers personalized financial queries instantly
+
 ---
 
 # 🛠 Tech Stack
@@ -163,6 +175,7 @@ Create a `.env` file inside the **backend** directory and add the following vari
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
+GEMINI_API_KEY=your_google_gemini_api_key
 ```
 
 ---
@@ -196,9 +209,7 @@ JWT_SECRET=your_secret_key
 
 - Budget Analytics
 - Interactive Charts & Graphs
-- Monthly Financial Reports
 - Search & Filter Transactions
-- Export Reports (PDF/Excel)
 - Responsive Dashboard
 - Dark Mode
 - Multi-Currency Support

@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FAQ_DATA } from './faq-data';
+import { ChatService } from '../../services/chat.service';
 
 interface ChatMessage {
   sender: 'user' | 'bot';
@@ -18,19 +18,22 @@ interface ChatMessage {
 export class ChatSupport implements AfterViewChecked {
   isOpen = false;
   userInput = '';
+  isTyping = false;
   
   messages: ChatMessage[] = [
-    { sender: 'bot', text: 'Hi 👋 Welcome to Expense Tracker Support. How can I help you today?' }
+    { sender: 'bot', text: 'Hi 👋 I am your AI Financial Assistant. How can I help you today?' }
   ];
 
   suggestedQuestions: string[] = [
-    'How do I create a budget?',
-    'How do I add a transaction?',
-    'How do categories work?',
-    'How do reports work?'
+    'How much did I spend on food this month?',
+    'What is my current balance?',
+    'Am I over budget on travel?',
+    'What was my total income last month?'
   ];
 
   @ViewChild('chatBody') private chatBody!: ElementRef;
+
+  constructor(private chatService: ChatService) {}
 
   toggleChat() {
     this.isOpen = !this.isOpen;
@@ -42,37 +45,23 @@ export class ChatSupport implements AfterViewChecked {
 
   sendMessage(text?: string) {
     const question = (text || this.userInput).trim();
-    if (!question) return;
+    if (!question || this.isTyping) return;
 
     this.messages = [...this.messages, { sender: 'user', text: question }];
     this.userInput = '';
-
-    const answer = this.findAnswer(question);
+    this.isTyping = true;
     
-    setTimeout(() => {
-      this.messages = [...this.messages, { sender: 'bot', text: answer }];
-    }, 400);
-  }
-
-  private findAnswer(question: string): string {
-    const lowerQ = question.toLowerCase();
-    
-    let match = FAQ_DATA.find(f => f.question.toLowerCase() === lowerQ);
-    
-    if (!match) {
-      const cleanLowerQ = lowerQ.replace(/[^\w\s]/gi, '');
-      const userWords = cleanLowerQ.split(' ').filter(w => w.length > 3);
-      
-      if (userWords.length > 0) {
-        match = FAQ_DATA.find(f => {
-           const cleanFAQ = f.question.toLowerCase().replace(/[^\w\s]/gi, '');
-           const keywords = cleanFAQ.split(' ').filter(w => w.length > 3);
-           return userWords.some(uw => keywords.some(kw => kw.includes(uw) || uw.includes(kw)));
-        });
+    this.chatService.sendMessage(question).subscribe({
+      next: (response) => {
+        this.isTyping = false;
+        this.messages = [...this.messages, { sender: 'bot', text: response.answer }];
+      },
+      error: (error) => {
+        this.isTyping = false;
+        const errorMessage = error.error?.message || 'Sorry, I am having trouble connecting to the server.';
+        this.messages = [...this.messages, { sender: 'bot', text: errorMessage }];
       }
-    }
-
-    return match ? match.answer : "Sorry, I couldn't find an answer to that. Please contact support or try asking another question.";
+    });
   }
 
   ngAfterViewChecked() {

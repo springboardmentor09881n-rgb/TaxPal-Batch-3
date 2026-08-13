@@ -28,6 +28,12 @@
           {{ suggestion }}
         </button>
       </div>
+
+      <div class="message-wrapper" *ngIf="isTyping">
+        <div class="message-bubble typing-indicator">
+          <span>.</span><span>.</span><span>.</span>
+        </div>
+      </div>
     </div>
 
     <div class="chat-footer">

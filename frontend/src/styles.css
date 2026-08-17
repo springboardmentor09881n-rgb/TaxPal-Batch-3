@@ -1,0 +1,442 @@
+/* Global Typography & Base Defaults */
+:root {
+  --bg-primary: #f5f6fa;
+  --bg-card: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #172033;
+  --text-secondary: #64748b;
+  --border-color: #e5e7eb;
+  --border-subtle: #f1f5f9;
+  --accent-color: #7c3aed;
+  --accent-hover: #6d28d9;
+}
+
+body.dark-theme,
+html.dark-theme {
+  --bg-primary: #0b0f19;
+  --bg-card: #1e293b;
+  --bg-secondary: #0f172a;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: #334155;
+  --border-subtle: #1e293b;
+  --accent-color: #a78bfa;
+  --accent-hover: #8b5cf6;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ============================================================
+   GLOBAL DARK THEME OVERRIDES
+   ============================================================ */
+
+/* App Layout & Page Content */
+.dark-theme .app-layout {
+  background-color: #0b0f19 !important;
+  color: #f8fafc !important;
+}
+
+.dark-theme .page-content {
+  background-color: #0b0f19 !important;
+}
+
+/* Sidebar Dark Mode */
+.dark-theme .sidebar {
+  background-color: #111827 !important;
+  border-right-color: #1f2937 !important;
+}
+
+.dark-theme .sidebar a {
+  color: #9ca3af !important;
+}
+
+.dark-theme .sidebar a svg {
+  stroke: #9ca3af !important;
+}
+
+.dark-theme .sidebar a:hover {
+  background-color: #1f2937 !important;
+  color: #f3f4f6 !important;
+}
+
+.dark-theme .sidebar a:hover svg {
+  stroke: #f3f4f6 !important;
+}
+
+.dark-theme .sidebar a.active {
+  background-color: rgba(124, 58, 237, 0.22) !important;
+  color: #c4b5fd !important;
+}
+
+.dark-theme .sidebar a.active svg {
+  stroke: #c4b5fd !important;
+}
+
+.dark-theme .sidebar-bottom {
+  border-top-color: #1f2937 !important;
+}
+
+.dark-theme .sidebar-action-btn {
+  color: #9ca3af !important;
+}
+
+.dark-theme .sidebar-action-btn svg {
+  stroke: #9ca3af !important;
+}
+
+.dark-theme .sidebar-action-btn.settings-btn:hover {
+  background-color: #1f2937 !important;
+  color: #c4b5fd !important;
+}
+
+.dark-theme .sidebar-action-btn.settings-btn:hover svg {
+  stroke: #c4b5fd !important;
+}
+
+.dark-theme .sidebar-action-btn.settings-btn.active {
+  background-color: rgba(124, 58, 237, 0.22) !important;
+  color: #c4b5fd !important;
+}
+
+.dark-theme .sidebar-action-btn.settings-btn.active svg {
+  stroke: #c4b5fd !important;
+}
+
+.dark-theme .sidebar-action-btn.logout-btn:hover {
+  background-color: rgba(220, 38, 38, 0.15) !important;
+  color: #f87171 !important;
+}
+
+.dark-theme .sidebar-action-btn.logout-btn:hover svg {
+  stroke: #f87171 !important;
+}
+
+/* Headings & Text */
+.dark-theme h1,
+.dark-theme h2,
+.dark-theme h3,
+.dark-theme h4,
+.dark-theme .page-header h1,
+.dark-theme .card-header h2 {
+  color: #f8fafc !important;
+}
+
+.dark-theme p,
+.dark-theme .page-header p,
+.dark-theme .card-header p,
+.dark-theme .subtitle,
+.dark-theme .stat-label {
+  color: #94a3b8 !important;
+}
+
+/* Top Navbar Dark Mode */
+.dark-theme .top-navbar {
+  background-color: #111827 !important;
+  border-bottom-color: #1f2937 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25) !important;
+}
+
+.dark-theme .brand-name {
+  color: #a78bfa !important;
+}
+
+.dark-theme .user-name {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.dark-theme .user-email {
+  color: #cbd5e1 !important;
+}
+
+.dark-theme .theme-toggle-btn {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #fbbf24 !important;
+}
+
+/* Cards & Containers */
+.dark-theme .transaction-card,
+.dark-theme .transaction-list-card,
+.dark-theme .reports-card,
+.dark-theme .generate-card,
+.dark-theme .recent-reports-card,
+.dark-theme .categories-container,
+.dark-theme .panel-card,
+.dark-theme .login-card,
+.dark-theme .register-card,
+.dark-theme .settings-card,
+.dark-theme .stat-card,
+.dark-theme .card,
+.dark-theme .budget-card,
+.dark-theme .report-card,
+.dark-theme .tax-card,
+.dark-theme .calculator-card,
+.dark-theme .recent-card,
+.dark-theme .recent-transactions,
+.dark-theme .category-breakdown,
+.dark-theme .chart-card,
+.dark-theme .reports-list,
+.dark-theme .generator-card,
+.dark-theme .list-card,
+.dark-theme .report-generator,
+.dark-theme .preview-card,
+.dark-theme .modal-content,
+.dark-theme .transactions-table-container {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-theme .card-header,
+.dark-theme .stat-card-header,
+.dark-theme .preview-header,
+.dark-theme .recent-heading,
+.dark-theme .chart-heading {
+  border-bottom-color: #334155 !important;
+}
+
+/* Password Input with Eye Toggle */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  width: 100% !important;
+  padding-right: 44px !important;
+  box-sizing: border-box;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 6px;
+  margin: 0;
+  cursor: pointer;
+  color: #64748b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  line-height: 1;
+  z-index: 2;
+}
+
+.password-toggle-btn:hover {
+  color: #7c3aed;
+  background-color: rgba(124, 58, 237, 0.08);
+}
+
+.dark-theme .password-toggle-btn {
+  color: #94a3b8 !important;
+}
+
+.dark-theme .password-toggle-btn:hover {
+  color: #c4b5fd !important;
+  background-color: rgba(124, 58, 237, 0.2) !important;
+}
+
+/* Form Controls & Inputs */
+.dark-theme input[type="text"],
+.dark-theme input[type="email"],
+.dark-theme input[type="password"],
+.dark-theme input[type="number"],
+.dark-theme input[type="tel"],
+.dark-theme input[type="date"],
+.dark-theme select,
+.dark-theme textarea {
+  background-color: #0f172a !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+
+.dark-theme input:focus,
+.dark-theme select:focus,
+.dark-theme textarea:focus {
+  border-color: #a78bfa !important;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2) !important;
+}
+
+.dark-theme input:disabled,
+.dark-theme select:disabled,
+.dark-theme textarea:disabled {
+  background-color: #1e293b !important;
+  color: #64748b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme label {
+  color: #cbd5e1 !important;
+}
+
+.dark-theme .hint-text {
+  color: #64748b !important;
+}
+
+/* Tables */
+.dark-theme table {
+  border-color: #334155 !important;
+}
+
+.dark-theme th {
+  background-color: #0f172a !important;
+  color: #cbd5e1 !important;
+  border-bottom-color: #334155 !important;
+}
+
+.dark-theme td {
+  color: #e2e8f0 !important;
+  border-bottom-color: #334155 !important;
+}
+
+.dark-theme tbody tr:hover td {
+  background-color: #334155 !important;
+}
+
+.dark-theme .empty-state,
+.dark-theme .empty-table {
+  color: #94a3b8 !important;
+}
+
+/* Buttons & Controls */
+.dark-theme .action-icon-btn {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+}
+
+.dark-theme .action-icon-btn.view-btn {
+  background-color: rgba(37, 99, 235, 0.2) !important;
+  border-color: #3b82f6 !important;
+  color: #93c5fd !important;
+}
+
+.dark-theme .action-icon-btn.view-btn:hover {
+  background-color: rgba(37, 99, 235, 0.35) !important;
+}
+
+.dark-theme .action-icon-btn.download-btn {
+  background-color: rgba(5, 150, 105, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #6ee7b7 !important;
+}
+
+.dark-theme .action-icon-btn.download-btn:hover {
+  background-color: rgba(5, 150, 105, 0.35) !important;
+}
+
+.dark-theme .action-icon-btn.delete-btn {
+  background-color: rgba(220, 38, 38, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}
+
+.dark-theme .action-icon-btn.delete-btn:hover {
+  background-color: rgba(220, 38, 38, 0.35) !important;
+}
+
+.dark-theme .btn-secondary,
+.dark-theme .secondary-btn,
+.dark-theme .filter-btn {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #e5e7eb !important;
+}
+
+.dark-theme .btn-secondary:hover,
+.dark-theme .secondary-btn:hover,
+.dark-theme .filter-btn:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+/* Metric / Summary Boxes */
+.dark-theme .metric-card,
+.dark-theme .summary-metric-card,
+.dark-theme .kpi-box,
+.dark-theme .tax-result-card,
+.dark-theme .metric-stat {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .metric-value,
+.dark-theme .stat-number,
+.dark-theme .kpi-value {
+  color: #f8fafc !important;
+}
+
+.dark-theme .progress-bar-container,
+.dark-theme .progress-track,
+.dark-theme .progress-bg {
+  background-color: #334155 !important;
+}
+
+/* Chat Support Widget */
+.dark-theme .chat-window {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark-theme .chat-messages {
+  background-color: #0f172a !important;
+}
+
+.dark-theme .chat-message.bot-message,
+.dark-theme .message.bot {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme .chat-input-container {
+  background-color: #1e293b !important;
+  border-top-color: #334155 !important;
+}
+
+.dark-theme .chat-input-container input {
+  background-color: #0f172a !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+
+/* Badges & Status Pills */
+.budget-status {
+  padding: 8px 16px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.dark-theme .budget-status {
+  background-color: rgba(34, 197, 94, 0.22) !important;
+  color: #4ade80 !important;
+  border: 1.5px solid #22c55e !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.2) !important;
+}
+
+.dark-theme .over-budget-status {
+  background-color: rgba(239, 68, 68, 0.22) !important;
+  color: #f87171 !important;
+  border: 1.5px solid #ef4444 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.2) !important;
+}

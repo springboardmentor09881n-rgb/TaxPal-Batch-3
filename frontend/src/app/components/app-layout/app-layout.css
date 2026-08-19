@@ -1,0 +1,12 @@
+.app-layout {
+  min-height: 100vh;
+  background-color: #f5f6fa;
+  box-sizing: border-box;
+}
+
+.page-content {
+  margin-left: 220px;
+  min-height: 100vh;
+  padding: 88px 30px 30px 30px;
+  box-sizing: border-box;
+}

@@ -1,0 +1,136 @@
+:host {
+  display: block;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  bottom: 0;
+  width: 220px;
+  height: calc(100vh - 64px);
+  z-index: 999;
+}
+
+.sidebar {
+  box-sizing: border-box;
+  width: 220px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 14px;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  overflow-y: auto;
+}
+
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  color: #4b5563;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.sidebar a svg {
+  flex-shrink: 0;
+  stroke: #6b7280;
+  transition: stroke 0.2s ease;
+}
+
+.sidebar a:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+.sidebar a:hover svg {
+  stroke: #1f2937;
+}
+
+.sidebar a.active {
+  background-color: #ede9fe;
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+.sidebar a.active svg {
+  stroke: #7c3aed;
+}
+
+.sidebar-bottom {
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  margin-top: 16px;
+}
+
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.sidebar-action-btn svg {
+  flex-shrink: 0;
+  stroke: #6b7280;
+  transition: stroke 0.2s ease;
+}
+
+.sidebar-action-btn.settings-btn:hover {
+  background-color: #f3f4f6;
+  color: #7c3aed;
+}
+
+.sidebar-action-btn.settings-btn:hover svg {
+  stroke: #7c3aed;
+}
+
+.sidebar-action-btn.settings-btn.active {
+  background-color: #ede9fe;
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+.sidebar-action-btn.settings-btn.active svg {
+  stroke: #7c3aed;
+}
+
+.sidebar-action-btn.logout-btn:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.sidebar-action-btn.logout-btn:hover svg {
+  stroke: #dc2626;
+}
